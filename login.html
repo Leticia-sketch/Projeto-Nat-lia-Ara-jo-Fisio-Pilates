@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+ 
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen flex">
+
+  
+  <div class="hidden md:flex w-1/2 relative">
+    <img src="img/studio4.jpeg" class="w-full h-full object-cover">
+
+    <div class="absolute inset-0 bg-green-600/70 flex flex-col justify-center px-12 text-white">
+      <h1 class="text-5xl font-light mb-4">Bem-vinda</h1>
+      <p class="text-xl">Painel Administrativo</p>
+      <p class="text-lg">Studio de Pilates</p>
+    </div>
+  </div>
+
+ 
+  <div class="w-full md:w-1/2 flex items-center justify-center bg-[#f5f7f8]">
+
+    <div class="w-full max-w-md">
+
+      <div class="flex justify-center mb-6">
+        <div class="bg-green-500 w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl">
+          🔒
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-center mb-2">
+        Acesso Restrito
+      </h2>
+
+      <p class="text-center text-gray-500 mb-6">
+        Entre com suas credenciais para continuar
+      </p>
+
+      
+      <form id="loginForm" class="space-y-4">
+
+        <div>
+          <label>Email</label>
+          <input type="email"
+            class="w-full border rounded-lg p-3"
+            placeholder="seu@email.com">
+        </div>
+
+        <div>
+          <label>Senha</label>
+          <input type="password"
+            class="w-full border rounded-lg p-3"
+            placeholder="••••••••">
+        </div>
+
+        <div class="text-right text-sm text-green-600">
+          <a href="#">Esqueceu a senha?</a>
+        </div>
+
+        <button
+          class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+          Entrar
+        </button>
+
+      </form>
+
+      <p class="text-center text-sm text-gray-400 mt-6">
+        © 2026 Studio de Pilates
+      </p>
+
+    </div>
+
+  </div>
+
+  <script>
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault()
+
+  
+    window.location.href = "dashboard.html"
+  })
+</script>
+
+</body>
+</html>

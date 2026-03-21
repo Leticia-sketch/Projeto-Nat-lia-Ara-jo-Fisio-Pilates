@@ -1,0 +1,278 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: #f5f7f8;
+}
+
+/* parte do header */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #3986C5;
+    padding: 20px;
+    z-index: 10;
+}
+
+nav {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* parte do hero */ 
+.hero {
+    position: relative;
+    height: 100vh;
+      background: url("../img/home.jpeg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding-left: 100px;
+    margin-top: 60px; /* evita sobreposição com header */
+    
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(231, 218, 218, 0),
+    #f5f7f8
+  );
+}
+
+.hero h1 {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 500px;
+}
+
+.btn {
+    background: #69D7DC;
+    padding: 10px 25px;
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* imagem sobreposta do studio */
+
+#img {
+  position: relative;
+  margin-left: 50px;
+  width: 400px;
+}
+
+/* estado inicial */
+.img-base {
+  width: 70%;
+  border-radius: 10px;
+  transform: translateX(10px, 10px);
+  transition: transform 0.8s ease;
+}
+
+.img-topo {
+  position: absolute;
+  width: 25%;
+  top: -30px;
+  left: -170px;
+  z-index: 2;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+}
+
+/* a parte de serviços */
+.servicos {
+    padding: 80px 10%;
+}
+
+.servicos h2 {
+    text-align: center;
+    margin-bottom: 80px;
+    color: #69D7DC;
+    font-size: 35px;
+}
+
+.servicos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.texto {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+
+.btn-saiba {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background: white;
+    color: #3986C5;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+
+    align-self: flex-start; /* ou flex-end se quiser na direita */
+}
+
+.btn-saiba:hover {
+    background: #69D7DC;
+    color: black;
+}
+
+.card {
+    display: flex;
+    background: #3986C5;
+    color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card img {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.texto {
+    padding: 20px;
+}
+
+/* parte de studio */
+.estudio {
+    padding: 80px 10%;
+}
+
+.estudio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+}
+
+.estudio img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.estudio-texto {
+    background: #69D7DC;
+    padding: 40px;
+    color: white;
+    border-radius: 10px;
+    text-align: justify;
+}
+
+.estudio-texto h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+    text-align:center ;
+}
+
+/* sobre natália */
+.sobre {
+    padding: 80px 10%;
+}
+
+.sobre-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.sobre img {
+    width: 70%;
+    border-radius: 10px;
+
+    -webkit-mask-image: radial-gradient(circle, black 60%, transparent 100%);
+    mask-image: radial-gradient(circle, black 60%, transparent 100%);
+}
+
+
+
+.sobre-texto h2 {
+    color: #69D7DC;
+    font-size: 35px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sobre-texto {
+    text-align: justify;
+}
+
+
+/* botão de login do adm */
+.login-btn {
+    background: #69D7DC;
+    padding: 8px 18px;
+    border-radius: 5px;
+    color: black;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #4fc3c9;
+}
+
+/* deixando reponsivo */
+
+@media (max-width: 768px) {
+
+    .servicos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .estudio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sobre-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding-left: 20px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 20px;
+    }
+
+}

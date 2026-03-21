@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <title>Natália Araújo - Fisio Pilates</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Página Inicial</a></li>
+                <li><a href="#estudio">Estúdio</a></li>
+                <li><a href="#sobre">Sobre mim</a></li>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#planos">Planos</a></li>
+                <li><a href="#depoimentos">Depoimentos</a></li>
+                <li><a href="#contato">Contato</a></li>
+                <li><a href="login.html" class="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1 id="tituloHero"></h1>
+            <a href="#" class="btn" id="botaoHero"></a>
+        </div>
+    </section>
+
+    <section class="estudio" id="estudio">
+        <div class="estudio-grid">
+            <div class="relative w-[400px] overflow-hidden rounded-2xl" id="carousel">
+
+                <div class="flex transition-transform duration-500" id="carouselTrack">
+                    <img src="img/studio1.jpeg" class="w-full flex-shrink-0">
+                    <img src="img/studio2.jpeg" class="w-full flex-shrink-0">
+                    <img src="img/studio3.jpeg" class="w-full flex-shrink-0">
+                    <img src="img/studio4.jpeg" class="w-full flex-shrink-0">
+                </div>
+
+                <!-- Botões -->
+                <button id="prev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white px-3 py-1 rounded shadow">
+                    ◀
+                </button>
+
+                <button id="next" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white px-3 py-1 rounded shadow">
+                    ▶
+                </button>
+
+            </div>
+
+            <div class="estudio-texto">
+                <h2 id="tituloEstudio"></h2>
+                <p id="textoEstudio"></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="sobre" id="sobre">
+        <div class="sobre-grid">
+            <div class="sobre-texto">
+                <h2 id="tituloSobre"></h2>
+                <ul id="listaSobre"></ul>
+                <p id="textoSobre"></p>
+            </div>
+            <img src="img/natalia.jpeg">
+        </div>
+    </section>
+
+    <section class="servicos" id="servicos">
+        <h2 id="tituloServicos"></h2>
+        <div class="servicos-grid" id="servicosContainer"></div>
+    </section>
+
+    <section id="planos" class="py-20 bg-[#f5f7f8]">
+        <div class="max-w-5xl mx-auto px-6">
+
+            <h2 class="text-4xl font-bold text-center mb-12 text-[#3986C5]">
+                Planos e Preços
+            </h2>
+
+            <div id="planosContainer" class="grid md:grid-cols-2 gap-8"></div>
+
+        </div>
+    </section>
+
+    <section id="depoimentos" class="py-20 bg-[#f5f7f8]">
+        <div class="max-w-6xl mx-auto px-6">
+
+            <h2 class="text-4xl font-bold text-center mb-4">
+                Depoimentos
+            </h2>
+
+            <p class="text-center text-gray-600 mb-12">
+                O que nossos alunos dizem sobre nós
+            </p>
+
+            <div id="depoimentosContainer" class="grid md:grid-cols-3 gap-8"></div>
+
+        </div>
+    </section>
+
+    <section id="contato" class="py-20 bg-[#f5f7f8]">
+
+  <div class="max-w-6xl mx-auto px-6 text-center">
+
+    <h2 class="text-4xl font-bold mb-12">Entre em Contato</h2>
+
+    <div id="contatoContainer" class="grid md:grid-cols-3 gap-6"></div>
+
+  </div>
+
+</section>
+
+
+
+    <script type="module" src="js/main.js"></script>
+
+</body>
+
+</html>
