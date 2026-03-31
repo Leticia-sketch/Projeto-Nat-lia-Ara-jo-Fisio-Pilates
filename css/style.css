@@ -145,7 +145,7 @@ nav a {
     text-decoration: none;
     font-weight: 600;
 
-    align-self: flex-start; /* ou flex-end se quiser na direita */
+    align-self: center; /* ou flex-end se quiser na direita */
 }
 
 .btn-saiba:hover {
@@ -184,7 +184,7 @@ nav a {
 }
 
 .estudio img {
-    width: 100%;
+    width: 1000%;
     border-radius: 10px;
 }
 
@@ -200,6 +200,20 @@ nav a {
     font-size: 35px;
     margin-bottom: 20px;
     text-align:center ;
+}
+
+.carousel-item {
+    width: 100%;
+    flex-shrink: 0;
+    transition: all 0.5s ease;
+    transform: scale(0.85);
+    opacity: 0.5;
+}
+
+.carousel-item.active {
+    transform: scale(1);
+    opacity: 1;
+    z-index: 2;
 }
 
 /* sobre natália */
@@ -248,6 +262,15 @@ nav a {
 
 .login-btn:hover {
     background: #4fc3c9;
+}
+
+footer {
+    background-image: linear-gradient(#3986C5,#32a392); /* o background da parte de contato*/
+}
+
+/* a parte de planos*/
+#planosContainer div {
+    transition: all 0.7s ease;
 }
 
 /* deixando reponsivo */

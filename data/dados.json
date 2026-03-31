@@ -42,53 +42,48 @@
     }
   ],
   "planos": [
-    {
-      "titulo": "Plano Grupo 2x",
-      "tipo": "grupo",
-      "beneficios": [
-        "2x por semana",
-        "Aulas em grupo"
-      ],
-      "destaque": true
-    },
-    {
-      "titulo": "Plano Individual",
-      "tipo": "individual",
-      "beneficios": [
-        "Aula personalizada"
-      ],
-      "destaque": false
-    }
-  ],
+  {
+    "titulo": "Pilates",
+    "preco": "Planos flexíveis!",
+    "beneficios": [
+      "Semanal (7 dias)",
+      "Quinzenal (15 dias)",
+      "Mensal (30 dias)",
+      "Anual (1 ano)"
+    ],
+    "link": "detalhes.html",
+    "tipo": "secundario",
+    "botao": "Ver detalhes!"
+  },
+  {
+    "titulo": "Fisioterapia",
+    "preco": "Atendimento individualizado!",
+    "beneficios": [
+      "Avaliação fisioteraupêutica completa",
+      "Plano de tratamento personalizado",
+      "Acompanhamento contínuo"
+    ],
+    "link": "https://wa.me/558388435842",
+    "tipo": "principal",
+    "botao": "Fale conosco no Whatsapp!"
+  }
+],
   "depoimentos": [
-    {
-      "nome": "@gabibcunha",
-      "texto": "Natália é uma profissional incrível! Sempre atenciosa com seus alunos. Um amor de pessoa!",
-      "estrelas": 5
-    },
-    {
-      "nome": "@janete.bsm",
-      "texto": "Um amor! Trata a gente com muito carinho e atenção, melhor prof de pilates!.",
-      "estrelas": 4
-    },
-    {
-      "nome": "@layseformiga",
-      "texto": "Uma profissional excelente, com uma dedicação maravilhosa e ambiente super acolhedor!",
-      "estrelas": 5
-    }
-  ],
-  "contato": [
-    {
-      "titulo": "Telefone",
-      "info": "(83) 00000-0000"
-    },
-    {
-      "titulo": "Email",
-      "info": "contato@studiopilates.com.br"
-    },
-    {
-      "titulo": "Endereço",
-      "info": "Rua das Flores, 123 - João Pessoa - PB"
-    }
-  ]
+  { "nome": "@gabibcunha", "texto": "Natália é uma profissional incrível. Sempre atenciosa com seus alunos, um amor de pessoa!", "estrelas": 5 },
+  { "nome": "@maosdefadaenf", "texto": "Uma pessoa e profissional incrível!", "estrelas": 5 },
+  { "nome": "@ryslania_santos", "texto": "Profissional dedicada, amorosa, empática e entre muitos outos adjetivos!", "estrelas": 4 },
+  { "nome": "@layseformiga", "texto": "Uma profissional excelente, com uma dedicação maravilhosa, além de uma ambiente super acolhedor!", "estrelas": 5 },
+  { "nome": "@sabrina.imagemestilo", "texto": "Uma profissional maravilhosa, dedicada e atenciosa! Amiga linda que eu amo que o pilates me deu!", "estrelas": 5 },
+  { "nome": "@profciencias", "texto": "Pessoa meiga, cativante e acolhedora. A melhor profissional que conheço porque faz tudo com muito amor!", "estrelas": 4 }
+],
+  "footer": {
+  "titulo": "Studio Natália Araújo",
+  "descricao": "Especialista em fisioterapia e pilates terapêutico, com foco em escoliose, proporcionando qualidade de vida, postura e bem-estar aos pacientes.",
+  "telefone": "(83) 98843-5842",
+  "instagram": "@nataliaaraujofisiopilates",
+  "facebook": "Natália Araújo Fisiopilates",
+  "email": "contato@studiopilates.com.br",
+  "endereco": "João Pessoa - PB",
+  "mapa": "https://www.google.com/maps?q=Empresarial+Vicente+Pontes+-+R.+Rejane+Freire+Correia,+271+-+Sala+07+-+Jardim+Cidade+Universitária,+João+Pessoa+-+PB,+58052-197&output=embed"
+}
 }
