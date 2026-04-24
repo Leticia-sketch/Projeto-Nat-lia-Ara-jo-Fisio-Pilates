@@ -1,0 +1,34 @@
+### GET dados
+GET http://localhost:3000/dados
+
+###
+
+### GET planos
+GET http://localhost:3000/planos
+
+###
+
+### POST plano
+POST http://localhost:3000/planos
+Content-Type: application/json
+
+{
+  "titulo": "Plano Teste",
+  "preco": "R$ 999"
+}
+
+###
+
+### PUT plano
+PUT http://localhost:3000/planos/0
+Content-Type: application/json
+
+{
+  "titulo": "Plano Editado",
+  "preco": "R$ 123"
+}
+
+###
+
+### DELETE plano
+DELETE http://localhost:3000/planos/0

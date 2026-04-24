@@ -1,10 +1,10 @@
 {
   "hero": {
-    "titulo": "Natália Araújo - Fisio Pilates",
+    "titulo": "Natália Araújo - FisioPilates",
     "botao": "Agende agora"
   },
   "estudio": {
-    "titulo": "Estúdio Natália Araújo Fisio Pilates",
+    "titulo": "Estúdio Natália Araújo FisioPilates",
     "texto": "Nossa história começou em 2024, com o nascimento do Estúdio Natália Araújo Fisiopilates e um propósito bem definido: promover qualidade de vida por meio do movimento. O projeto teve início em um espaço de 24m², com poucos alunos, sempre com o compromisso de oferecer um atendimento humanizado e individualizado, respeitando as particularidades de cada paciente. Com o passar do tempo, crescemos e nos tornamos referência em João Pessoa no tratamento de escoliose e deformidades da coluna, utilizando abordagens como o Método Schroth aliado ao Pilates terapêutico. Hoje, já são mais de 150 vidas impactadas, marcadas por melhorias na saúde, na postura e no bem-estar. Porque, no fim, o que nos move são as pessoas — e o impacto positivo que podemos gerar na vida de cada uma delas."
   },
   "sobre": {
@@ -46,10 +46,10 @@
     "titulo": "Pilates",
     "preco": "Planos flexíveis!",
     "beneficios": [
-      "Semanal (7 dias)",
-      "Quinzenal (15 dias)",
       "Mensal (30 dias)",
-      "Anual (1 ano)"
+      "Quadrimestral (4 meses)",
+      "Semestral (6 meses)",
+      "Os planos quadrimestrais e semestrais podem ser adquiridos via cartão de crédito, com opção de parcelamento sem juros."
     ],
     "link": "detalhes.html",
     "tipo": "secundario",
@@ -82,8 +82,39 @@
   "telefone": "(83) 98843-5842",
   "instagram": "@nataliaaraujofisiopilates",
   "facebook": "Natália Araújo Fisiopilates",
-  "email": "contato@studiopilates.com.br",
+  "email": "nataliaaraujofisiopilates@gmail.com",
   "endereco": "João Pessoa - PB",
   "mapa": "https://www.google.com/maps?q=Empresarial+Vicente+Pontes+-+R.+Rejane+Freire+Correia,+271+-+Sala+07+-+Jardim+Cidade+Universitária,+João+Pessoa+-+PB,+58052-197&output=embed"
+},
+
+"planosDetalhados": {
+  "titulo": "Planos de Pilates",
+  "lista": [
+    {
+      "titulo": "1x por semana",
+      "opcoes": [
+        { "nome": "Mensal", "preco": "R$ 180" },
+        { "nome": "Quadrimestral", "preco": "R$ 170" },
+        { "nome": "Semestral", "preco": "R$ 160" }
+      ]
+    },
+    {
+      "titulo": "2x por semana",
+      "opcoes": [
+        { "nome": "Mensal", "preco": "R$ 280" },
+        { "nome": "Quadrimestral", "preco": "R$ 265" },
+        { "nome": "Semestral", "preco": "R$ 250" }
+      ]
+    },
+    {
+      "titulo": "3x por semana",
+      "opcoes": [
+        { "nome": "Mensal", "preco": "R$ 370" },
+        { "nome": "Quadrimestral", "preco": "R$ 360" },
+        { "nome": "Semestral", "preco": "R$ 350" }
+      ]
+    }
+  ]
 }
+
 }

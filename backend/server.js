@@ -1,0 +1,195 @@
+const express = require("express")
+const morgan = require("morgan")
+const cors = require("cors")
+
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+app.use(morgan("dev"))
+
+/* =========================
+   SEUS DADOS (JSON)
+========================= */
+
+let dados = {
+  hero: {
+    titulo: "Natália Araújo - FisioPilates",
+    botao: "Agende agora"
+  },
+  estudio: {
+    titulo: "Estúdio Natália Araújo FisioPilates",
+    texto: "Nossa história começou em 2024, com o nascimento do Estúdio Natália Araújo Fisiopilates e um propósito bem definido: promover qualidade de vida por meio do movimento. O projeto teve início em um espaço de 24m², com poucos alunos, sempre com o compromisso de oferecer um atendimento humanizado e individualizado, respeitando as particularidades de cada paciente. Com o passar do tempo, crescemos e nos tornamos referência em João Pessoa no tratamento de escoliose e deformidades da coluna, utilizando abordagens como o Método Schroth aliado ao Pilates terapêutico. Hoje, já são mais de 150 vidas impactadas, marcadas por melhorias na saúde, na postura e no bem-estar. Porque, no fim, o que nos move são as pessoas — e o impacto positivo que podemos gerar na vida de cada uma delas."
+  },
+  sobre: {
+    titulo: "Sobre Natália Araújo",
+    lista: ["", ""],
+    texto: "Natália Araújo é fisioterapeuta, especialista no tratamento de escoliose e deformidades da coluna, e fundadora do Estúdio Natália Araújo Fisiopilates. Sua atuação é marcada por um atendimento individualizado e humanizado, utilizando métodos reconhecidos internacionalmente, como o Método Schroth (SSOL) aliado ao Pilates terapêutico. Mais do que conduzir atendimentos, acredita no acolhimento, na escuta ativa e na educação do paciente como pilares fundamentais para uma reabilitação eficaz. Seu compromisso está em ajudar cada paciente a recuperar sua autonomia, melhorar sua qualidade de vida e se reconectar com o próprio corpo por meio do movimento, sempre com responsabilidade e dedicação."
+  },
+  servicos: [
+    {
+      titulo: "Método Schroth",
+      img: "img/minipa3.jpeg",
+      texto: "Esse Método corrige a coluna em três dimessões: Alinhmento estratégico, respiração direcionada, fortalecimento muscular específico! Além de outros benefícios.",
+      link: "escoliose.html"
+    },
+    {
+      titulo: "Tratamento de Escoliose",
+      img: "img/resultado5.jpeg",
+      texto: "O tratamento da escoliose se dá por meio de exercícios específicos de correção para escoliose. Tais exercícios sãaao eficientes para a  autocorreção tridimencional da coluna vertebral ",
+      link: "escoliose.html"
+    },
+    {
+      titulo: "Pilates Terapêutico",
+      img: "img/paciente3.jpeg",
+      texto: "Focado na reabilitação de lesões, alívio de dores crônicas (como hérnias de disco, dores lombares e cervicais), correção postural e fortalecimento profundo, respeitando os limites físicos de cada paciente!",
+      link: "escoliose.html"
+    },
+    {
+      titulo: "Nossos resultados",
+      img: "img/resultado3.jpeg",
+      texto: "No meu estúdio associamos ambos os métodos! Essa combinação potencializa os resultados com: Exercícios individualizados, mobilidade e consciência corporal, força e estabilidade funcional!",
+      link: "escoliose.html"
+    }
+  ],
+  planos: [
+    {
+      titulo: "Pilates",
+      preco: "Planos flexíveis!",
+      beneficios: [
+        "Mensal (30 dias)",
+        "Quadrimestral (4 meses)",
+        "Semestral (6 meses)"
+      ],
+      link: "detalhes.html",
+      tipo: "secundario",
+      botao: "Ver detalhes!"
+    },
+    {
+      titulo: "Fisioterapia",
+      preco: "Atendimento individualizado!",
+      beneficios: [
+        "Avaliação fisioterapêutica completa",
+        "Plano de tratamento personalizado",
+        "Acompanhamento contínuo"
+      ],
+      link: "https://wa.me/558388435842",
+      tipo: "principal",
+      botao: "Fale conosco no Whatsapp!"
+    }
+  ],
+  depoimentos: [
+    { nome: "@gabibcunha", texto: "Natália é uma profissional incrível. Sempre atenciosa com seus alunos, um amor de pessoa!", estrelas: 5 },
+    { nome: "@maosdefadaenf", texto: "Profissional incrível!", estrelas: 5 },
+    {nome: "@ryslania_santos", texto: "Profissional dedicada, amorosa, empática e entre muitos outos adjetivos!", estrelas: 4 },
+    {nome: "@layseformiga", texto: "Uma profissional excelente, com uma dedicação maravilhosa, além de uma ambiente super acolhedor!", estrelas: 5 },
+    { nome: "@sabrina.imagemestilo", texto: "Uma profissional maravilhosa, dedicada e atenciosa! Amiga linda que eu amo que o pilates me deu!", estrelas: 5 },
+    {nome: "@profciencias", texto: "Pessoa meiga, cativante e acolhedora. A melhor profissional que conheço porque faz tudo com muito amor!", estrelas: 4}
+  ],
+  footer: {
+    titulo: "Studio Natália Araújo",
+    descricao: "Especialista em fisioterapia e pilates terapêutico, com foco em escoliose, proporcionando qualidade de vida, postura e bem-estar aos pacientes.",
+    telefone: "(83) 98843-5842",
+    instagram: "@nataliaaraujofisiopilates",
+    facebook: "Natália Araújo Fisiopilates",
+    email: "nataliaaraujofisiopilates@gmail.com",
+    endereco: "João Pessoa - PB",
+    mapa: "https://www.google.com/maps?q=Empresarial+Vicente+Pontes+-+R.+Rejane+Freire+Correia,+271+-+Sala+07+-+Jardim+Cidade+Universitária,+João+Pessoa+-+PB,+58052-197&output=embed"
+  },
+  planosDetalhados: {
+    titulo: "Planos de Pilates",
+    lista: [
+        {
+      "titulo": "1x por semana",
+      "opcoes": [
+        { "nome": "Mensal", "preco": "R$ 180" },
+        { "nome": "Quadrimestral", "preco": "R$ 170" },
+        { "nome": "Semestral", "preco": "R$ 160" }
+      ]
+    },
+    {
+      "titulo": "2x por semana",
+      "opcoes": [
+        { "nome": "Mensal", "preco": "R$ 280" },
+        { "nome": "Quadrimestral", "preco": "R$ 265" },
+        { "nome": "Semestral", "preco": "R$ 250" }
+      ]
+    },
+    {
+      "titulo": "3x por semana",
+      "opcoes": [
+        { "nome": "Mensal", "preco": "R$ 370" },
+        { "nome": "Quadrimestral", "preco": "R$ 360" },
+        { "nome": "Semestral", "preco": "R$ 350" }
+      ]
+    }
+    ]
+  }
+}
+
+/* =========================
+   ROTAS
+========================= */
+
+// teste
+app.get("/", (req, res) => {
+  res.send("Servidor rodando 🚀")
+})
+
+// importante
+app.get("/dados", (req, res) => {
+  res.status(200).json(dados)
+})
+
+// =========================
+// CRUD PLANOS
+// =========================
+
+// GET planos
+app.get("/planos", (req, res) => {
+  res.json(dados.planos)
+})
+
+// POST plano
+app.post("/planos", (req, res) => {
+  const novoPlano = req.body
+
+  if (!novoPlano.titulo) {
+    return res.status(400).json({ erro: "Título obrigatório" })
+  }
+
+  dados.planos.push(novoPlano)
+  res.status(201).json(novoPlano)
+})
+
+// PUT plano
+app.put("/planos/:id", (req, res) => {
+  const id = req.params.id
+
+  if (!dados.planos[id]) {
+    return res.status(404).json({ erro: "Plano não encontrado" })
+  }
+
+  dados.planos[id] = req.body
+  res.json(dados.planos[id])
+})
+
+// DELETE plano
+app.delete("/planos/:id", (req, res) => {
+  const id = req.params.id
+
+  if (!dados.planos[id]) {
+    return res.status(404).json({ erro: "Plano não encontrado" })
+  }
+
+  dados.planos.splice(id, 1)
+  res.status(204).send()
+})
+
+/* =========================
+   SERVIDOR
+========================= */
+
+app.listen(3000, () => {
+  console.log("Servidor rodando em http://localhost:3000")
+})

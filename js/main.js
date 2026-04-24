@@ -38,5 +38,6 @@ document.getElementById("prev").onclick = () => {
     updateCarousel()
 }
 
+
 // inicia com o primeiro ativo
 updateCarousel()

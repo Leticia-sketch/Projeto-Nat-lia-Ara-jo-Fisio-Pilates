@@ -198,3 +198,4 @@ const observerSobre = new IntersectionObserver((entries) => {
 observerSobre.observe(document.getElementById("animSobreTexto"))
 observerSobre.observe(document.getElementById("animSobreImg"))
 }
+

@@ -189,17 +189,23 @@ nav a {
 }
 
 .estudio-texto {
-    background: #69D7DC;
-    padding: 40px;
-    color: white;
-    border-radius: 10px;
-    text-align: justify;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
 }
 
-.estudio-texto h2 {
-    font-size: 35px;
-    margin-bottom: 20px;
-    text-align:center ;
+#tituloEstudio {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    line-height: 1.2;
+    color: #69D7DC;
+}
+
+#textoEstudio {
+    font-size: 17px;
+    line-height: 1.8;
+    letter-spacing: 0.3px;
 }
 
 .carousel-item {
@@ -238,17 +244,27 @@ nav a {
 
 
 
-.sobre-texto h2 {
-    color: #69D7DC;
-    font-size: 35px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
 .sobre-texto {
-    text-align: justify;
+    max-width: 600px; 
+    line-height: 1.8; 
+    font-size: 16px;
+    color: #333;
 }
 
+.sobre-texto p {
+    margin-top: 20px;
+}
+
+.sobre-texto h2 {
+    margin-bottom: 25px;
+}
+
+#tituloSobre {
+    font-size: 32px;
+    font-weight: 600;
+    color: #69D7DC; 
+    margin-bottom: 20px;
+}
 
 /* botão de login do adm */
 .login-btn {
