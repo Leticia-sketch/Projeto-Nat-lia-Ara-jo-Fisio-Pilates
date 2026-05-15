@@ -1,12 +1,15 @@
 const express = require("express")
 const morgan = require("morgan")
 const cors = require("cors")
+const path = require("path")
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 app.use(morgan("dev"))
+
+app.use(express.static(path.join(__dirname, "../public")))
 
 /* =========================
    SEUS DADOS (JSON)
@@ -186,9 +189,14 @@ app.delete("/planos/:id", (req, res) => {
   res.status(204).send()
 })
 
+
+
 /* =========================
    SERVIDOR
 ========================= */
+app.get("/dashboard", (req, res) => {
+    res.sendFile(path.join(__dirname, "../dashboard.html"))
+})
 
 app.listen(3000, () => {
   console.log("Servidor rodando em http://localhost:3000")

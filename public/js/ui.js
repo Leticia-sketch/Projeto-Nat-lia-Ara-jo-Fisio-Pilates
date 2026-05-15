@@ -43,10 +43,9 @@ export function renderizarSite(conteudo) {
 
         card.innerHTML = `
             <img src="${img}">
-            <div class="texto text-center">
+            <div class="texto text-center flex flex-col justify-center h-full p-6">
                 <h3 class="font-bold text-lg mb-2">${servico.titulo || ""}</h3>
                 <p>${servico.texto || ""}</p>
-                <a href="${servico.link}" class="btn-saiba block mx-auto mt-4 w-fit">Saiba mais</a>
             </div>
         `
 
