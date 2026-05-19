@@ -130,6 +130,8 @@ let dados = {
   }
 }
 
+
+
 /* =========================
    ROTAS
 ========================= */
@@ -198,6 +200,10 @@ app.get("/dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, "../dashboard.html"))
 })
 
+
 app.listen(3000, () => {
   console.log("Servidor rodando em http://localhost:3000")
 })
+
+
+
