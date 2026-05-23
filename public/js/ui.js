@@ -4,9 +4,13 @@ export function renderizarSite(conteudo) {
     document.getElementById("tituloHero").innerText = conteudo.hero.titulo
     document.getElementById("botaoHero").innerText = conteudo.hero.botao
 
+    
     // ESTÚDIO
-    document.getElementById("tituloEstudio").innerText = conteudo.estudio.titulo
-    document.getElementById("textoEstudio").innerText = conteudo.estudio.texto
+    document.getElementById("tituloEstudio").innerText =
+        conteudo.estudio.titulo
+
+    document.getElementById("textoEstudio").innerText =
+        conteudo.estudio.texto
 
     // SOBRE
     document.getElementById("tituloSobre").innerText = conteudo.sobre.titulo
@@ -163,38 +167,38 @@ export function renderizarSite(conteudo) {
     // =========================
 
     document.getElementById("footerTitulo").innerText = conteudo.footer.titulo
-document.getElementById("footerDescricao").innerText = conteudo.footer.descricao
+    document.getElementById("footerDescricao").innerText = conteudo.footer.descricao
 
-document.getElementById("footerEndereco").innerText = "📍 " + conteudo.footer.endereco
-document.getElementById("footerTelefone").innerText = "📞 " + conteudo.footer.telefone
+    document.getElementById("footerEndereco").innerText = "📍 " + conteudo.footer.endereco
+    document.getElementById("footerTelefone").innerText = "📞 " + conteudo.footer.telefone
 
-// 👇 redes no MESMO estilo
-document.getElementById("footerInstagram").innerText = "📷 " + conteudo.footer.instagram
-document.getElementById("footerFacebook").innerText = "📘 " + conteudo.footer.facebook
+    // redes
+    document.getElementById("footerInstagram").innerText = "📷 " + conteudo.footer.instagram
+    document.getElementById("footerFacebook").innerText = "📘 " + conteudo.footer.facebook
 
-document.getElementById("footerEmail").innerText = "✉️ " + conteudo.footer.email
+    document.getElementById("footerEmail").innerText = "✉️ " + conteudo.footer.email
 
-document.getElementById("footerMapa").src = conteudo.footer.mapa
+    document.getElementById("footerMapa").src = conteudo.footer.mapa
 
-//animação natália
-const observerSobre = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
+    //animação natália
+    const observerSobre = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
 
-            if (entry.target.id === "animSobreTexto") {
-                entry.target.classList.remove("opacity-0", "-translate-x-20")
+                if (entry.target.id === "animSobreTexto") {
+                    entry.target.classList.remove("opacity-0", "-translate-x-20")
+                }
+
+                if (entry.target.id === "animSobreImg") {
+                    entry.target.classList.remove("opacity-0", "translate-x-20")
+                }
+
             }
-
-            if (entry.target.id === "animSobreImg") {
-                entry.target.classList.remove("opacity-0", "translate-x-20")
-            }
-
-        }
+        })
     })
-})
 
-// aplicando os elementos
-observerSobre.observe(document.getElementById("animSobreTexto"))
-observerSobre.observe(document.getElementById("animSobreImg"))
+    // aplicando os elementos
+    observerSobre.observe(document.getElementById("animSobreTexto"))
+    observerSobre.observe(document.getElementById("animSobreImg"))
 }
 
