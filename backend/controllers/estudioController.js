@@ -10,7 +10,7 @@ async function buscar(req, res) {
   }
 }
 
-// NOVO: CREATE
+//  CREATE
 async function criar(req, res) {
   try {
     const { titulo, texto } = req.body

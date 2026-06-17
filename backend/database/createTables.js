@@ -36,22 +36,10 @@ async function createTables() {
     CREATE TABLE IF NOT EXISTS sobre (
       id INT PRIMARY KEY AUTO_INCREMENT,
       titulo VARCHAR(255),
-      texto TEXT
+      texto TEXT,
+      lista TEXT
     )
   `)
-
-  // SERVICOS
-  await db.execute(`
-  CREATE TABLE IF NOT EXISTS servicos (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(255),
-    img VARCHAR(255),
-    texto TEXT,
-    link VARCHAR(255),
-    plano_id INT,
-    FOREIGN KEY (plano_id) REFERENCES planos(id)
-  )
-`)
 
   // PLANOS
   await db.execute(`
@@ -61,7 +49,30 @@ async function createTables() {
       preco VARCHAR(255),
       link VARCHAR(255),
       tipo VARCHAR(255),
-      botao VARCHAR(255)
+      botao VARCHAR(255),
+      beneficios TEXT
+    )
+  `)
+
+  // SERVICOS (depois de planos por causa da FOREIGN KEY)
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS servicos (
+      id INT PRIMARY KEY AUTO_INCREMENT,
+      titulo VARCHAR(255),
+      img VARCHAR(255),
+      texto TEXT,
+      link VARCHAR(255),
+      plano_id INT,
+      FOREIGN KEY (plano_id) REFERENCES planos(id)
+    )
+  `)
+
+  // PLANOS DETALHADOS
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS planos_detalhados (
+      id INT PRIMARY KEY AUTO_INCREMENT,
+      titulo VARCHAR(255),
+      opcoes TEXT
     )
   `)
 

@@ -23,7 +23,6 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    /* SCROLL */
     ::-webkit-scrollbar {
       width: 8px;
     }
@@ -33,38 +32,23 @@
       border-radius: 20px;
     }
 
-    h1,
-    h2,
-    h3 {
+    h1, h2, h3 {
       font-family: 'Playfair Display', serif;
     }
-
-    /* animações */
 
     .fade {
       animation: fade .4s ease;
     }
 
     @keyframes fade {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
-    /* sidebar */
 
     .menu-item.active {
       background: #1f7a55;
       color: white;
     }
-
-    /* inputs */
 
     .input {
       width: 100%;
@@ -87,8 +71,6 @@
       box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
     }
 
-    /* botão */
-
     .btn {
       background: #1f7a55;
       color: white;
@@ -108,360 +90,190 @@
   <div class="flex h-screen overflow-hidden">
 
     <!-- SIDEBAR -->
-
     <aside class="w-[280px] bg-white border-r border-gray-200 flex flex-col justify-between">
-
       <div>
-
         <div class="p-8">
-
-          <h1 class="text-3xl font-bold text-[#1f7a55]">
-            Studio
-          </h1>
-
-          <p class="text-gray-500 mt-2">
-            Painel Administrativo
-          </p>
-
+          <h1 class="text-3xl font-bold text-[#1f7a55]">Studio</h1>
+          <p class="text-gray-500 mt-2">Painel Administrativo</p>
         </div>
 
-        <!-- MENU -->
-
         <nav class="px-4 space-y-3">
-
           <button onclick="mostrarSecao('hero', event)"
             class="menu-item active w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition">
-
-            <i class="fa-solid fa-house"></i>
-            Hero
-
+            <i class="fa-solid fa-house"></i> Hero
           </button>
 
           <button onclick="mostrarSecao('estudio', event)"
             class="menu-item w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition hover:bg-gray-100">
-
-            <i class="fa-solid fa-building"></i>
-            Estúdio
-
+            <i class="fa-solid fa-building"></i> Estúdio
           </button>
 
           <button onclick="mostrarSecao('sobre', event)"
             class="menu-item w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition hover:bg-gray-100">
-
-            <i class="fa-solid fa-user"></i>
-            Sobre
-
+            <i class="fa-solid fa-user"></i> Sobre
           </button>
 
           <button onclick="mostrarSecao('servicos', event)"
             class="menu-item w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition hover:bg-gray-100">
-
-            <i class="fa-solid fa-layer-group"></i>
-            Serviços
-
+            <i class="fa-solid fa-layer-group"></i> Serviços
           </button>
 
           <button onclick="mostrarSecao('planos', event)"
             class="menu-item w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition hover:bg-gray-100">
+            <i class="fa-solid fa-credit-card"></i> Planos
+          </button>
 
-            <i class="fa-solid fa-credit-card"></i>
-            Planos
-
+          <button onclick="mostrarSecao('planosDetalhados', event)"
+            class="menu-item w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition hover:bg-gray-100">
+            <i class="fa-solid fa-list"></i> Planos Detalhados
           </button>
 
           <button onclick="mostrarSecao('depoimentos', event)"
             class="menu-item w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition hover:bg-gray-100">
-
-            <i class="fa-solid fa-comments"></i>
-            Depoimentos
-
+            <i class="fa-solid fa-comments"></i> Depoimentos
           </button>
 
           <button onclick="mostrarSecao('footer', event)"
             class="menu-item w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition hover:bg-gray-100">
-
-            <i class="fa-solid fa-envelope"></i>
-            Footer
-
+            <i class="fa-solid fa-envelope"></i> Footer
           </button>
-
         </nav>
-
       </div>
-
-
-
-
-
     </aside>
 
     <!-- CONTEÚDO -->
-
     <main class="flex-1 overflow-y-auto p-10">
 
       <!-- HERO -->
-
       <section id="hero" class="secao fade">
-
         <div class="flex justify-between items-center mb-8">
-
           <div>
-
-            <h2 class="text-5xl font-bold mb-2">
-              Hero
-            </h2>
-
-            <p class="text-gray-500 text-xl">
-              Área principal do site
-            </p>
-
+            <h2 class="text-5xl font-bold mb-2">Hero</h2>
+            <p class="text-gray-500 text-xl">Área principal do site</p>
           </div>
-
-          <button class="btn">
-            Salvar alterações
-          </button>
-
+          <button onclick="salvarHero()" class="btn">Salvar alterações</button>
         </div>
 
         <div class="card">
-
           <div class="mb-6">
-
-            <label class="font-semibold block mb-2">
-              Título principal
-            </label>
-
+            <label class="font-semibold block mb-2">Título principal</label>
             <input class="input" value="Natália Araújo - FisioPilates">
-
           </div>
-
           <div>
-
-            <label class="font-semibold block mb-2">
-              Texto do botão
-            </label>
-
+            <label class="font-semibold block mb-2">Texto do botão</label>
             <input class="input" value="Agende agora">
-
           </div>
-
         </div>
-
       </section>
 
       <!-- ESTÚDIO -->
-
       <section id="estudio" class="secao hidden fade">
-
         <div class="flex justify-between items-center mb-8">
-
           <div>
-
-            <h2 class="text-5xl font-bold mb-2">
-              Estúdio
-            </h2>
-
-            <p class="text-gray-500 text-xl">
-              Informações do estúdio
-            </p>
-
+            <h2 class="text-5xl font-bold mb-2">Estúdio</h2>
+            <p class="text-gray-500 text-xl">Informações do estúdio</p>
           </div>
-
-          <button onclick="salvarEstudio()" class="btn">
-            Salvar alterações
-          </button>
-
+          <button onclick="salvarEstudio()" class="btn">Salvar alterações</button>
         </div>
 
         <div class="card">
-
           <div class="mb-6">
-
-            <label class="font-semibold block mb-2">
-              Título
-            </label>
-
+            <label class="font-semibold block mb-2">Título</label>
             <input id="tituloEstudioInput" class="input">
-
           </div>
-
           <div>
-
-            <label class="font-semibold block mb-2">
-              Texto
-            </label>
-
+            <label class="font-semibold block mb-2">Texto</label>
             <textarea id="textoEstudioInput" class="input h-[250px] resize-none"></textarea>
-
           </div>
-
         </div>
-
       </section>
 
       <!-- SOBRE -->
-
       <section id="sobre" class="secao hidden fade">
-
         <div class="flex justify-between items-center mb-8">
-
           <div>
-
-            <h2 class="text-5xl font-bold mb-2">
-              Sobre
-            </h2>
-
-            <p class="text-gray-500 text-xl">
-              Informações da profissional
-            </p>
-
+            <h2 class="text-5xl font-bold mb-2">Sobre</h2>
+            <p class="text-gray-500 text-xl">Informações da profissional</p>
           </div>
-
-          <button class="btn">
-            Salvar alterações
-          </button>
-
+          <button onclick="salvarSobre()" class="btn">Salvar alterações</button>
         </div>
 
         <div class="card space-y-6">
-
           <input class="input" value="Sobre Natália Araújo">
-
           <textarea class="input h-[300px] resize-none"></textarea>
-
         </div>
-
       </section>
 
       <!-- SERVIÇOS -->
-
       <section id="servicos" class="secao hidden fade">
-
         <div class="flex justify-between items-center mb-10">
-
           <div>
-
-            <h2 class="text-5xl font-bold mb-2">
-              Serviços
-            </h2>
-
-            <p class="text-gray-500 text-xl">
-              Gerencie os serviços do site
-            </p>
-
+            <h2 class="text-5xl font-bold mb-2">Serviços</h2>
+            <p class="text-gray-500 text-xl">Gerencie os serviços do site</p>
           </div>
-
-          <button onclick="novoServico()" class="btn">
-            + Novo serviço
-          </button>
-
+          <button onclick="novoServico()" class="btn">+ Novo serviço</button>
         </div>
-
-        <!-- GRID -->
-
         <div class="grid grid-cols-2 gap-8"></div>
-
       </section>
 
       <!-- PLANOS -->
-
       <section id="planos" class="secao hidden fade">
-
         <div class="flex justify-between items-center mb-10">
-
           <div>
-
-            <h2 class="text-5xl font-bold mb-2">
-              Planos
-            </h2>
-
-            <p class="text-gray-500 text-xl">
-              Edite planos e valores
-            </p>
-
+            <h2 class="text-5xl font-bold mb-2">Planos</h2>
+            <p class="text-gray-500 text-xl">Edite planos e valores</p>
           </div>
-
-          <button onclick="novoPlano()" class="btn">
-            + Novo plano
-          </button>
-
+          <button onclick="novoPlano()" class="btn">+ Novo plano</button>
         </div>
-
         <div class="grid grid-cols-2 gap-8"></div>
+      </section>
+
+      <!-- PLANOS DETALHADOS -->
+      <section id="planosDetalhados" class="secao hidden fade">
+        <div class="flex justify-between items-center mb-10">
+          <div>
+            <h2 class="text-5xl font-bold mb-2">Planos Detalhados</h2>
+            <p class="text-gray-500 text-xl">Edite frequências e preços</p>
+          </div>
+          <button onclick="novoPlanoDetalhado()" class="btn">+ Nova frequência</button>
+        </div>
+        <div id="planosDetalhadosGrid" class="grid grid-cols-2 gap-8"></div>
       </section>
 
       <!-- DEPOIMENTOS -->
-
       <section id="depoimentos" class="secao hidden fade">
-
         <div class="flex justify-between items-center mb-10">
-
           <div>
-
-            <h2 class="text-5xl font-bold mb-2">
-              Depoimentos
-            </h2>
-
-            <p class="text-gray-500 text-xl">
-              Comentários dos pacientes
-            </p>
-
+            <h2 class="text-5xl font-bold mb-2">Depoimentos</h2>
+            <p class="text-gray-500 text-xl">Comentários dos pacientes</p>
           </div>
-
-          <button onclick="novoDepoimento()" class="btn">
-            + Novo depoimento
-          </button>
-
+          <button onclick="novoDepoimento()" class="btn">+ Novo depoimento</button>
         </div>
-
         <div class="grid grid-cols-2 gap-8"></div>
-
       </section>
 
       <!-- FOOTER -->
-
       <section id="footer" class="secao hidden fade">
-
         <div class="flex justify-between items-center mb-10">
-
           <div>
-
-            <h2 class="text-5xl font-bold mb-2">
-              Footer
-            </h2>
-
-            <p class="text-gray-500 text-xl">
-              Informações finais do site
-            </p>
-
+            <h2 class="text-5xl font-bold mb-2">Footer</h2>
+            <p class="text-gray-500 text-xl">Informações finais do site</p>
           </div>
-
-          <button class="btn">
-            Salvar alterações
-          </button>
-
+          <button onclick="salvarFooter()" class="btn">Salvar alterações</button>
         </div>
 
         <div class="card space-y-5">
-
           <input class="input" value="Studio Natália Araújo">
-
           <input class="input" value="(83) 98843-5842">
-
           <input class="input" value="@nataliaaraujofisiopilates">
-
           <input class="input" value="João Pessoa - PB">
-
         </div>
-
       </section>
 
     </main>
-
   </div>
 
   <script src="/dashboard.js"></script>
-
 </body>
 
 </html>

@@ -1,17 +1,21 @@
-import { carregarDados } from "./api.js"
+async function carregarPlanosDetalhados() {
+  const resposta = await fetch("http://localhost:3000/planos-detalhados")
+  const dados = await resposta.json()
+  return dados
+}
 
-carregarDados().then(dados => {
+carregarPlanosDetalhados().then(dados => {
 
-    const titulo = document.getElementById("tituloDetalhes")
-    const container = document.getElementById("detalhesContainer")
+  const titulo = document.getElementById("tituloDetalhes")
+  const container = document.getElementById("detalhesContainer")
 
-    titulo.innerText = dados.planosDetalhados.titulo
+  titulo.innerText = dados.titulo
 
-    dados.planosDetalhados.lista.forEach(plano => {
+  dados.lista.forEach(plano => {
 
-        let card = document.createElement("div")
+    let card = document.createElement("div")
 
-        card.className = `
+    card.className = `
 bg-[#112e27] 
 border border-green-500/20 
 p-8 rounded-3xl 
@@ -21,18 +25,18 @@ hover:shadow-green-500/20
 transition duration-500
 `
 
-        card.innerHTML = `
+    card.innerHTML = `
 <h2 class="text-2xl font-semibold mb-6 text-green-300">
-    ${plano.titulo}
+  ${plano.titulo}
 </h2>
 
 <div class="space-y-4">
-    ${plano.opcoes.map(op => `
-        <div class="flex justify-between border-b border-green-500/20 pb-2 text-gray-300">
-            <span>${op.nome}</span>
-            <span class="font-semibold text-white">${op.preco}</span>
-        </div>
-    `).join("")}
+  ${plano.opcoes.map(op => `
+    <div class="flex justify-between border-b border-green-500/20 pb-2 text-gray-300">
+      <span>${op.nome}</span>
+      <span class="font-semibold text-white">${op.preco}</span>
+    </div>
+  `).join("")}
 </div>
 
 <a href="https://wa.me/558388435842"
@@ -40,7 +44,7 @@ transition duration-500
    Quero este plano
 </a>
 `
-        container.appendChild(card)
-    })
+    container.appendChild(card)
+  })
 
 })

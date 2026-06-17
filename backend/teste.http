@@ -1,34 +1,18 @@
-### GET dados
+### GET - Buscar todos os dados do site (parte pública)
 GET http://localhost:3000/dados
 
 ###
 
-### GET planos
-GET http://localhost:3000/planos
+### GET - Buscar apenas estúdio
+GET http://localhost:3000/estudio
 
 ###
 
-### POST plano
-POST http://localhost:3000/planos
+### PUT - Atualizar estúdio
+PUT http://localhost:3000/estudio
 Content-Type: application/json
 
 {
-  "titulo": "Plano Teste",
-  "preco": "R$ 999"
+  "titulo": "Estúdio Natália Araújo FisioPilates",
+  "texto": "Nossa história começou em 2024, com o nascimento do Estúdio Natália Araújo Fisiopilates e um propósito bem definido: promover qualidade de vida por meio do movimento. O projeto teve início em um espaço de 24m², com poucos alunos, sempre com o compromisso de oferecer um atendimento humanizado e individualizado, respeitando as particularidades de cada paciente. Com o passar do tempo, crescemos e nos tornamos referência em João Pessoa no tratamento de escoliose e deformidades da coluna, utilizando abordagens como o Método Schroth aliado ao Pilates terapêutico. Hoje, já são mais de 150 vidas impactadas, marcadas por melhorias na saúde, na postura e no bem-estar. Porque, no fim, o que nos move são as pessoas — e o impacto positivo que podemos gerar na vida de cada uma delas."
 }
-
-###
-
-### PUT plano
-PUT http://localhost:3000/planos/0
-Content-Type: application/json
-
-{
-  "titulo": "Plano Editado",
-  "preco": "R$ 123"
-}
-
-###
-
-### DELETE plano
-DELETE http://localhost:3000/planos/0
