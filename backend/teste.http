@@ -3,7 +3,31 @@ GET http://localhost:3000/dados
 
 ###
 
-### GET - Buscar apenas estúdio
+### ==================
+### HERO
+### ==================
+
+### GET - Buscar hero
+GET http://localhost:3000/hero
+
+###
+
+### PUT - Atualizar hero
+PUT http://localhost:3000/hero
+Content-Type: application/json
+
+{
+  "titulo": "Natália Araújo - FisioPilates",
+  "botao": "Agende agora"
+}
+
+###
+
+### ==================
+### ESTÚDIO
+### ==================
+
+### GET - Buscar estúdio
 GET http://localhost:3000/estudio
 
 ###
@@ -14,5 +38,252 @@ Content-Type: application/json
 
 {
   "titulo": "Estúdio Natália Araújo FisioPilates",
-  "texto": "Nossa história começou em 2024, com o nascimento do Estúdio Natália Araújo Fisiopilates e um propósito bem definido: promover qualidade de vida por meio do movimento. O projeto teve início em um espaço de 24m², com poucos alunos, sempre com o compromisso de oferecer um atendimento humanizado e individualizado, respeitando as particularidades de cada paciente. Com o passar do tempo, crescemos e nos tornamos referência em João Pessoa no tratamento de escoliose e deformidades da coluna, utilizando abordagens como o Método Schroth aliado ao Pilates terapêutico. Hoje, já são mais de 150 vidas impactadas, marcadas por melhorias na saúde, na postura e no bem-estar. Porque, no fim, o que nos move são as pessoas — e o impacto positivo que podemos gerar na vida de cada uma delas."
+  "texto": "Nossa história começou em 2024, com o nascimento do Estúdio Natália Araújo Fisiopilates."
 }
+
+###
+
+### ==================
+### SOBRE
+### ==================
+
+### GET - Buscar sobre
+GET http://localhost:3000/sobre
+
+###
+
+### PUT - Atualizar sobre
+PUT http://localhost:3000/sobre
+Content-Type: application/json
+
+{
+  "titulo": "Sobre Natália Araújo",
+  "texto": "Natália Araújo é fisioterapeuta, especialista no tratamento de escoliose."
+}
+
+###
+
+### ==================
+### SERVIÇOS
+### ==================
+
+### GET - Buscar serviços
+GET http://localhost:3000/servicos
+
+###
+
+### POST - Criar serviço
+POST http://localhost:3000/servicos
+Content-Type: application/json
+
+{
+  "titulo": "Novo Serviço",
+  "img": "img/exemplo.jpeg",
+  "texto": "Descrição do novo serviço."
+}
+
+###
+
+### PUT - Atualizar serviço
+PUT http://localhost:3000/servicos/1
+Content-Type: application/json
+
+{
+  "titulo": "Método Schroth",
+  "img": "img/minipa3.jpeg",
+  "texto": "Esse Método corrige a coluna em três dimensões."
+}
+
+###
+
+### DELETE - Deletar serviço
+DELETE http://localhost:3000/servicos/1
+
+###
+
+### PUT - Caso inválido (id inexistente)
+PUT http://localhost:3000/servicos/9999
+Content-Type: application/json
+
+{
+  "titulo": "Teste inválido",
+  "img": "",
+  "texto": ""
+}
+
+###
+
+### ==================
+### PLANOS
+### ==================
+
+### GET - Buscar planos
+GET http://localhost:3000/planos
+
+###
+
+### POST - Criar plano
+POST http://localhost:3000/planos
+Content-Type: application/json
+
+{
+  "titulo": "Novo Plano",
+  "preco": "R$ 200",
+  "beneficios": ["Benefício 1", "Benefício 2"]
+}
+
+###
+
+### PUT - Atualizar plano
+PUT http://localhost:3000/planos/1
+Content-Type: application/json
+
+{
+  "titulo": "Pilates",
+  "preco": "Planos flexíveis!",
+  "beneficios": ["Mensal (30 dias)", "Quadrimestral (4 meses)", "Semestral (6 meses)"]
+}
+
+###
+
+### DELETE - Deletar plano
+DELETE http://localhost:3000/planos/1
+
+###
+
+### ==================
+### PLANOS DETALHADOS
+### ==================
+
+### GET - Buscar planos detalhados
+GET http://localhost:3000/planos-detalhados
+
+###
+
+### POST - Criar plano detalhado
+POST http://localhost:3000/planos-detalhados
+Content-Type: application/json
+
+{
+  "titulo": "4x por semana",
+  "opcoes": [
+    { "nome": "Mensal", "preco": "R$ 450" },
+    { "nome": "Semestral", "preco": "R$ 420" }
+  ]
+}
+
+###
+
+### PUT - Atualizar plano detalhado
+PUT http://localhost:3000/planos-detalhados/1
+Content-Type: application/json
+
+{
+  "titulo": "1x por semana",
+  "opcoes": [
+    { "nome": "Mensal", "preco": "R$ 180" },
+    { "nome": "Quadrimestral", "preco": "R$ 170" },
+    { "nome": "Semestral", "preco": "R$ 160" }
+  ]
+}
+
+###
+
+### ==================
+### DEPOIMENTOS
+### ==================
+
+### GET - Buscar depoimentos
+GET http://localhost:3000/depoimentos
+
+###
+
+### POST - Criar depoimento
+POST http://localhost:3000/depoimentos
+Content-Type: application/json
+
+{
+  "nome": "@novo_usuario",
+  "texto": "Profissional excelente!",
+  "estrelas": 5
+}
+
+###
+
+### PUT - Atualizar depoimento
+PUT http://localhost:3000/depoimentos/1
+Content-Type: application/json
+
+{
+  "nome": "@gabibcunha",
+  "texto": "Natália é uma profissional incrível!",
+  "estrelas": 5
+}
+
+###
+
+### DELETE - Deletar depoimento
+DELETE http://localhost:3000/depoimentos/1
+
+###
+
+### PUT - Caso inválido (id inexistente)
+PUT http://localhost:3000/depoimentos/9999
+Content-Type: application/json
+
+{
+  "nome": "Teste inválido",
+  "texto": "",
+  "estrelas": 0
+}
+
+###
+
+### ==================
+### FOOTER
+### ==================
+
+### GET - Buscar footer
+GET http://localhost:3000/footer
+
+###
+
+### PUT - Atualizar footer
+PUT http://localhost:3000/footer
+Content-Type: application/json
+
+{
+  "titulo": "Studio Natália Araújo",
+  "telefone": "(83) 98843-5842",
+  "instagram": "@nataliaaraujofisiopilates",
+  "endereco": "João Pessoa - PB",
+  "mapa": "https://maps.google.com/maps?q=R.+Rejane+Freire+Correia,+271,+João+Pessoa+PB&output=embed"
+}
+
+###
+
+### ==================
+### LOGIN
+### ==================
+
+### POST - Login válido
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "nataliaaraujofisiopilates@gmail.com",
+  "senha": "123456"
+}
+
+###
+
+### POST - Login inválido
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "emailerrado@gmail.com",
+  "senha": "senhaerrada"
+}
+
+###

@@ -4,7 +4,7 @@ export function renderizarSite(conteudo) {
     document.getElementById("tituloHero").innerText = conteudo.hero.titulo
     document.getElementById("botaoHero").innerText = conteudo.hero.botao
 
-    
+
     // ESTÚDIO
     document.getElementById("tituloEstudio").innerText =
         conteudo.estudio.titulo
@@ -178,7 +178,10 @@ export function renderizarSite(conteudo) {
 
     document.getElementById("footerEmail").innerText = "✉️ " + conteudo.footer.email
 
-    document.getElementById("footerMapa").src = conteudo.footer.mapa
+    const mapaEl = document.getElementById("footerMapa")
+    if (conteudo.footer.mapa) {
+        mapaEl.src = `https://maps.google.com/maps?q=${encodeURIComponent("R. Rejane Freire Correia, 271, Sala 07, Jardim Cidade Universitária, João Pessoa PB")}&output=embed`
+    }
 
     //animação natália
     const observerSobre = new IntersectionObserver((entries) => {

@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../ERD.svg"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id    Int    @id @default(autoincrement())
+  email String
+  senha String
+
+  @@map("admins")
+}
+
+model Hero {
+  id     Int    @id @default(autoincrement())
+  titulo String
+  botao  String
+
+  @@map("hero")
+}
+
+model Estudio {
+  id     Int    @id @default(autoincrement())
+  titulo String
+  texto  String @db.Text
+
+  @@map("estudio")
+}
+
+model Sobre {
+  id     Int    @id @default(autoincrement())
+  titulo String
+  texto  String @db.Text
+  lista  String @db.Text
+
+  @@map("sobre")
+}
+
+model Plano {
+  id         Int       @id @default(autoincrement())
+  titulo     String
+  preco      String
+  link       String
+  tipo       String
+  botao      String
+  beneficios String    @db.Text
+  servicos   Servico[]
+
+  @@map("planos")
+}
+
+model Servico {
+  id      Int    @id @default(autoincrement())
+  titulo  String
+  img     String
+  texto   String @db.Text
+  link    String
+  planoId Int
+  plano   Plano  @relation(fields: [planoId], references: [id])
+
+  @@map("servicos")
+}
+
+model PlanoDetalhado {
+  id     Int    @id @default(autoincrement())
+  titulo String
+  opcoes String @db.Text
+
+  @@map("planos_detalhados")
+}
+
+model Depoimento {
+  id       Int    @id @default(autoincrement())
+  nome     String
+  texto    String @db.Text
+  estrelas Int
+
+  @@map("depoimentos")
+}
+
+model Footer {
+  id        Int    @id @default(autoincrement())
+  titulo    String
+  descricao String @db.Text
+  telefone  String
+  instagram String
+  facebook  String
+  email     String
+  endereco  String
+  mapa      String @db.Text
+
+  @@map("footer")
+}

@@ -32,7 +32,9 @@
       border-radius: 20px;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       font-family: 'Playfair Display', serif;
     }
 
@@ -41,8 +43,15 @@
     }
 
     @keyframes fade {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .menu-item.active {
@@ -263,10 +272,26 @@
         </div>
 
         <div class="card space-y-5">
-          <input class="input" value="Studio Natália Araújo">
-          <input class="input" value="(83) 98843-5842">
-          <input class="input" value="@nataliaaraujofisiopilates">
-          <input class="input" value="João Pessoa - PB">
+          <div>
+            <label class="font-semibold block mb-2">Título</label>
+            <input id="footerTitulo" class="input" value="Studio Natália Araújo">
+          </div>
+          <div>
+            <label class="font-semibold block mb-2">Telefone</label>
+            <input id="footerTelefone" class="input" value="(83) 98843-5842">
+          </div>
+          <div>
+            <label class="font-semibold block mb-2">Instagram</label>
+            <input id="footerInstagram" class="input" value="@nataliaaraujofisiopilates">
+          </div>
+          <div>
+            <label class="font-semibold block mb-2">Endereço</label>
+            <input id="footerEndereco" class="input" value="João Pessoa - PB">
+          </div>
+          <div>
+            <label class="font-semibold block mb-2">Link do Google Maps</label>
+            <input id="footerMapa" class="input" placeholder="https://www.google.com/maps?q=...">
+          </div>
         </div>
       </section>
 

@@ -297,29 +297,28 @@ async function deletarDepoimento(id) {
 // =========================
 
 function preencherFooter() {
-    const inputs = document.querySelectorAll("#footer input")
-    inputs[0].value = dados.footer?.titulo || ""
-    inputs[1].value = dados.footer?.telefone || ""
-    inputs[2].value = dados.footer?.instagram || ""
-    inputs[3].value = dados.footer?.endereco || ""
+  document.getElementById("footerTitulo").value = dados.footer?.titulo || ""
+  document.getElementById("footerTelefone").value = dados.footer?.telefone || ""
+  document.getElementById("footerInstagram").value = dados.footer?.instagram || ""
+  document.getElementById("footerEndereco").value = dados.footer?.endereco || ""
+  document.getElementById("footerMapa").value = dados.footer?.mapa || ""
 }
 
 async function salvarFooter() {
-    const inputs = document.querySelectorAll("#footer input")
-    const titulo = inputs[0].value
-    const telefone = inputs[1].value
-    const instagram = inputs[2].value
-    const endereco = inputs[3].value
+  const titulo = document.getElementById("footerTitulo").value
+  const telefone = document.getElementById("footerTelefone").value
+  const instagram = document.getElementById("footerInstagram").value
+  const endereco = document.getElementById("footerEndereco").value
+  const mapa = document.getElementById("footerMapa").value
 
-    await fetch("http://localhost:3000/footer", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ titulo, telefone, instagram, endereco })
-    })
+  await fetch("http://localhost:3000/footer", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ titulo, telefone, instagram, endereco, mapa })
+  })
 
-    alert("Footer salvo!")
+  alert("Footer salvo!")
 }
-
 // =========================
 // PLANOS DETALHADOS
 // =========================
