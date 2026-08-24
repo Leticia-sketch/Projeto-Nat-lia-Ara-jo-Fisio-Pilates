@@ -1,5 +1,108 @@
+### ==================
+### DADOS GERAIS (público)
+### ==================
+
 ### GET - Buscar todos os dados do site (parte pública)
 GET http://localhost:3000/dados
+
+###
+
+### ==================
+### AUTENTICAÇÃO
+### ==================
+
+### 1. Login válido (admin do seed)
+# @name loginValido
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "nataliaaraujofisiopilates@gmail.com",
+  "senha": "natália12345"
+}
+
+###
+
+### 2. Login com senha incorreta
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "nataliaaraujofisiopilates@gmail.com",
+  "senha": "senhaerrada"
+}
+
+###
+
+### 3. Login com usuário inexistente
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "naoexiste@gmail.com",
+  "senha": "qualquer123"
+}
+
+###
+
+### 4. Acesso ao dashboard SEM autenticação
+GET http://localhost:3000/dashboard
+
+###
+
+### 5. Acesso ao /auth/me SEM autenticação
+GET http://localhost:3000/auth/me
+
+###
+
+### 6. Acesso ao dashboard usando o cookie do login válido (item 1)
+GET http://localhost:3000/dashboard
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+###
+
+### 7. Acesso ao /auth/me autenticado
+GET http://localhost:3000/auth/me
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+###
+
+### 8. Cadastro de novo admin (rota protegida — só funciona autenticado)
+POST http://localhost:3000/auth/registrar
+Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+{
+  "nome": "Admin Teste",
+  "email": "adminteste@gmail.com",
+  "senha": "senhaTeste123"
+}
+
+###
+
+### 8b. Cadastro com e-mail já existente (deve dar 409)
+POST http://localhost:3000/auth/registrar
+Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+{
+  "nome": "Duplicado",
+  "email": "nataliaaraujofisiopilates@gmail.com",
+  "senha": "outrasenha"
+}
+
+###
+
+### 9. Logout
+# @name logout
+POST http://localhost:3000/auth/logout
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+###
+
+### 10. Tentativa de acessar rota protegida DEPOIS do logout (deve voltar 401)
+GET http://localhost:3000/auth/me
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
@@ -7,14 +110,26 @@ GET http://localhost:3000/dados
 ### HERO
 ### ==================
 
-### GET - Buscar hero
+### GET - Buscar hero (público)
 GET http://localhost:3000/hero
 
 ###
 
-### PUT - Atualizar hero
+### PUT - Atualizar hero SEM login (deve dar 401)
 PUT http://localhost:3000/hero
 Content-Type: application/json
+
+{
+  "titulo": "Teste sem login",
+  "botao": "Não deveria salvar"
+}
+
+###
+
+### PUT - Atualizar hero COM login
+PUT http://localhost:3000/hero
+Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Natália Araújo - FisioPilates",
@@ -27,14 +142,15 @@ Content-Type: application/json
 ### ESTÚDIO
 ### ==================
 
-### GET - Buscar estúdio
+### GET - Buscar estúdio (público)
 GET http://localhost:3000/estudio
 
 ###
 
-### PUT - Atualizar estúdio
+### PUT - Atualizar estúdio COM login
 PUT http://localhost:3000/estudio
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Estúdio Natália Araújo FisioPilates",
@@ -47,14 +163,15 @@ Content-Type: application/json
 ### SOBRE
 ### ==================
 
-### GET - Buscar sobre
+### GET - Buscar sobre (público)
 GET http://localhost:3000/sobre
 
 ###
 
-### PUT - Atualizar sobre
+### PUT - Atualizar sobre COM login
 PUT http://localhost:3000/sobre
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Sobre Natália Araújo",
@@ -67,14 +184,27 @@ Content-Type: application/json
 ### SERVIÇOS
 ### ==================
 
-### GET - Buscar serviços
+### GET - Buscar serviços (público)
 GET http://localhost:3000/servicos
 
 ###
 
-### POST - Criar serviço
+### POST - Criar serviço SEM login (deve dar 401)
 POST http://localhost:3000/servicos
 Content-Type: application/json
+
+{
+  "titulo": "Teste sem login",
+  "img": "",
+  "texto": "não deveria funcionar"
+}
+
+###
+
+### POST - Criar serviço COM login
+POST http://localhost:3000/servicos
+Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Novo Serviço",
@@ -84,9 +214,10 @@ Content-Type: application/json
 
 ###
 
-### PUT - Atualizar serviço
+### PUT - Atualizar serviço COM login
 PUT http://localhost:3000/servicos/1
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Método Schroth",
@@ -96,20 +227,9 @@ Content-Type: application/json
 
 ###
 
-### DELETE - Deletar serviço
+### DELETE - Deletar serviço COM login
 DELETE http://localhost:3000/servicos/1
-
-###
-
-### PUT - Caso inválido (id inexistente)
-PUT http://localhost:3000/servicos/9999
-Content-Type: application/json
-
-{
-  "titulo": "Teste inválido",
-  "img": "",
-  "texto": ""
-}
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
@@ -117,14 +237,15 @@ Content-Type: application/json
 ### PLANOS
 ### ==================
 
-### GET - Buscar planos
+### GET - Buscar planos (público)
 GET http://localhost:3000/planos
 
 ###
 
-### POST - Criar plano
+### POST - Criar plano COM login
 POST http://localhost:3000/planos
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Novo Plano",
@@ -134,9 +255,10 @@ Content-Type: application/json
 
 ###
 
-### PUT - Atualizar plano
+### PUT - Atualizar plano COM login
 PUT http://localhost:3000/planos/1
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Pilates",
@@ -146,8 +268,9 @@ Content-Type: application/json
 
 ###
 
-### DELETE - Deletar plano
+### DELETE - Deletar plano COM login
 DELETE http://localhost:3000/planos/1
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
@@ -155,14 +278,15 @@ DELETE http://localhost:3000/planos/1
 ### PLANOS DETALHADOS
 ### ==================
 
-### GET - Buscar planos detalhados
+### GET - Buscar planos detalhados (público)
 GET http://localhost:3000/planos-detalhados
 
 ###
 
-### POST - Criar plano detalhado
+### POST - Criar plano detalhado COM login
 POST http://localhost:3000/planos-detalhados
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "4x por semana",
@@ -174,9 +298,10 @@ Content-Type: application/json
 
 ###
 
-### PUT - Atualizar plano detalhado
+### PUT - Atualizar plano detalhado COM login
 PUT http://localhost:3000/planos-detalhados/1
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "1x por semana",
@@ -193,14 +318,15 @@ Content-Type: application/json
 ### DEPOIMENTOS
 ### ==================
 
-### GET - Buscar depoimentos
+### GET - Buscar depoimentos (público)
 GET http://localhost:3000/depoimentos
 
 ###
 
-### POST - Criar depoimento
+### POST - Criar depoimento COM login
 POST http://localhost:3000/depoimentos
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "nome": "@novo_usuario",
@@ -210,9 +336,10 @@ Content-Type: application/json
 
 ###
 
-### PUT - Atualizar depoimento
+### PUT - Atualizar depoimento COM login
 PUT http://localhost:3000/depoimentos/1
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "nome": "@gabibcunha",
@@ -222,20 +349,9 @@ Content-Type: application/json
 
 ###
 
-### DELETE - Deletar depoimento
+### DELETE - Deletar depoimento COM login
 DELETE http://localhost:3000/depoimentos/1
-
-###
-
-### PUT - Caso inválido (id inexistente)
-PUT http://localhost:3000/depoimentos/9999
-Content-Type: application/json
-
-{
-  "nome": "Teste inválido",
-  "texto": "",
-  "estrelas": 0
-}
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
@@ -243,14 +359,15 @@ Content-Type: application/json
 ### FOOTER
 ### ==================
 
-### GET - Buscar footer
+### GET - Buscar footer (público)
 GET http://localhost:3000/footer
 
 ###
 
-### PUT - Atualizar footer
+### PUT - Atualizar footer COM login
 PUT http://localhost:3000/footer
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Studio Natália Araújo",
@@ -259,31 +376,3 @@ Content-Type: application/json
   "endereco": "João Pessoa - PB",
   "mapa": "https://maps.google.com/maps?q=R.+Rejane+Freire+Correia,+271,+João+Pessoa+PB&output=embed"
 }
-
-###
-
-### ==================
-### LOGIN
-### ==================
-
-### POST - Login válido
-POST http://localhost:3000/login
-Content-Type: application/json
-
-{
-  "email": "nataliaaraujofisiopilates@gmail.com",
-  "senha": "123456"
-}
-
-###
-
-### POST - Login inválido
-POST http://localhost:3000/login
-Content-Type: application/json
-
-{
-  "email": "emailerrado@gmail.com",
-  "senha": "senhaerrada"
-}
-
-###

@@ -1,8 +1,28 @@
 import { PrismaClient } from "@prisma/client"
+import bcrypt from "bcrypt"
 
 const prisma = new PrismaClient()
 
 async function main() {
+  const senha = process.env.SEED_ADMIN_PASSWORD
+
+  if (!senha) {
+    throw new Error("SEED_ADMIN_PASSWORD não foi definida no .env")
+  }
+
+  const senhaHash = await bcrypt.hash(senha, 10)
+
+  await prisma.admin.upsert({
+    where: {
+      email: "nataliaaraujofisiopilates@gmail.com"
+    },
+    update: {},
+    create: {
+      nome: "Natália Araújo",
+      email: "nataliaaraujofisiopilates@gmail.com",
+      senhaHash
+    }
+  })
   await prisma.hero.create({
     data: { titulo: "Natália Araújo - FisioPilates", botao: "Agende agora" }
   })

@@ -12,7 +12,7 @@ let dados = {}
 
 async function carregarDados() {
     try {
-        const resposta = await fetch("http://localhost:3000/dados")
+        const resposta = await fetch("http://localhost:3000/dados", { credentials: "include" })
         dados = await resposta.json()
         console.log("Dados carregados:", dados)
         preencherHero()
@@ -27,6 +27,41 @@ async function carregarDados() {
     }
 }
 
+// =========================
+// AUTENTICAÇÃO
+// =========================
+
+async function verificarAutenticacao() {
+    try {
+        const resposta = await fetch("/auth/me", { credentials: "include" })
+
+        if (!resposta.ok) {
+            window.location.href = "/login.html"
+            return
+        }
+
+        const { admin } = await resposta.json()
+        const elementoNome = document.getElementById("nomeAdminLogado")
+        if (elementoNome) {
+            elementoNome.textContent = admin.nome
+        }
+    } catch (erro) {
+        console.error("Erro ao verificar autenticação:", erro)
+        window.location.href = "/login.html"
+    }
+}
+
+async function logout() {
+    try {
+        await fetch("/auth/logout", { method: "POST", credentials: "include" })
+    } catch (erro) {
+        console.error("Erro ao fazer logout:", erro)
+    } finally {
+        window.location.href = "/login.html"
+    }
+}
+
+verificarAutenticacao()
 carregarDados()
 
 // =========================
@@ -47,6 +82,7 @@ async function salvarHero() {
     await fetch("http://localhost:3000/hero", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ titulo, botao })
     })
 
@@ -63,7 +99,7 @@ function preencherEstudio() {
 }
 
 async function carregarEstudio() {
-    const res = await fetch("http://localhost:3000/estudio")
+    const res = await fetch("http://localhost:3000/estudio", { credentials: "include" })
     const estudio = await res.json()
     document.getElementById("tituloEstudioInput").value = estudio.titulo
     document.getElementById("textoEstudioInput").value = estudio.texto
@@ -76,6 +112,7 @@ async function salvarEstudio() {
     await fetch("http://localhost:3000/estudio", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ titulo, texto })
     })
 
@@ -100,6 +137,7 @@ async function salvarSobre() {
     await fetch("http://localhost:3000/sobre", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ titulo, texto })
     })
 
@@ -111,7 +149,7 @@ async function salvarSobre() {
 // =========================
 
 async function preencherServicos() {
-    const res = await fetch("http://localhost:3000/servicos")
+    const res = await fetch("http://localhost:3000/servicos", { credentials: "include" })
     dados.servicos = await res.json()
 
     const grid = document.querySelector("#servicos .grid")
@@ -146,6 +184,7 @@ async function salvarServico(id) {
     await fetch(`http://localhost:3000/servicos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ titulo, img, texto })
     })
 
@@ -157,6 +196,7 @@ async function novoServico() {
     await fetch("http://localhost:3000/servicos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ titulo: "Novo serviço", img: "", texto: "" })
     })
     preencherServicos()
@@ -164,7 +204,7 @@ async function novoServico() {
 
 async function deletarServico(id) {
     if (!confirm("Tem certeza que deseja deletar este serviço?")) return
-    await fetch(`http://localhost:3000/servicos/${id}`, { method: "DELETE" })
+    await fetch(`http://localhost:3000/servicos/${id}`, { method: "DELETE", credentials: "include" })
     preencherServicos()
 }
 
@@ -173,7 +213,7 @@ async function deletarServico(id) {
 // =========================
 
 async function preencherPlanos() {
-    const res = await fetch("http://localhost:3000/planos")
+    const res = await fetch("http://localhost:3000/planos", { credentials: "include" })
     dados.planos = await res.json()
 
     const grid = document.querySelector("#planos .grid")
@@ -208,6 +248,7 @@ async function salvarPlano(id) {
     await fetch(`http://localhost:3000/planos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ titulo, preco, beneficios })
     })
 
@@ -219,6 +260,7 @@ async function novoPlano() {
     await fetch("http://localhost:3000/planos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ titulo: "Novo plano", preco: "", beneficios: [] })
     })
     preencherPlanos()
@@ -226,7 +268,7 @@ async function novoPlano() {
 
 async function deletarPlano(id) {
     if (!confirm("Tem certeza que deseja deletar este plano?")) return
-    await fetch(`http://localhost:3000/planos/${id}`, { method: "DELETE" })
+    await fetch(`http://localhost:3000/planos/${id}`, { method: "DELETE", credentials: "include" })
     preencherPlanos()
 }
 
@@ -235,7 +277,7 @@ async function deletarPlano(id) {
 // =========================
 
 async function preencherDepoimentos() {
-    const res = await fetch("http://localhost:3000/depoimentos")
+    const res = await fetch("http://localhost:3000/depoimentos", { credentials: "include" })
     dados.depoimentos = await res.json()
 
     const grid = document.querySelector("#depoimentos .grid")
@@ -270,6 +312,7 @@ async function salvarDepoimento(id) {
     await fetch(`http://localhost:3000/depoimentos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ nome, texto, estrelas })
     })
 
@@ -281,6 +324,7 @@ async function novoDepoimento() {
     await fetch("http://localhost:3000/depoimentos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ nome: "", texto: "", estrelas: 5 })
     })
     preencherDepoimentos()
@@ -288,7 +332,7 @@ async function novoDepoimento() {
 
 async function deletarDepoimento(id) {
     if (!confirm("Tem certeza que deseja deletar este depoimento?")) return
-    await fetch(`http://localhost:3000/depoimentos/${id}`, { method: "DELETE" })
+    await fetch(`http://localhost:3000/depoimentos/${id}`, { method: "DELETE", credentials: "include" })
     preencherDepoimentos()
 }
 
@@ -314,11 +358,13 @@ async function salvarFooter() {
   await fetch("http://localhost:3000/footer", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify({ titulo, telefone, instagram, endereco, mapa })
   })
 
   alert("Footer salvo!")
 }
+
 // =========================
 // PLANOS DETALHADOS
 // =========================
@@ -326,7 +372,7 @@ async function salvarFooter() {
 let planosDetalhados = []
 
 async function carregarPlanosDetalhados() {
-    const res = await fetch("http://localhost:3000/planos-detalhados")
+    const res = await fetch("http://localhost:3000/planos-detalhados", { credentials: "include" })
     const dados = await res.json()
     planosDetalhados = dados.lista
     preencherPlanosDetalhados()
@@ -390,12 +436,14 @@ async function salvarPlanoDetalhado(index) {
         await fetch(`http://localhost:3000/planos-detalhados/${plano.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify({ titulo, opcoes })
         })
     } else {
         await fetch("http://localhost:3000/planos-detalhados", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify({ titulo, opcoes })
         })
     }

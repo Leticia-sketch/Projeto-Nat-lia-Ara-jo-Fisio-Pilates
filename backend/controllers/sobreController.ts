@@ -1,6 +1,7 @@
-const sobreModel = require("../models/sobreModel")
+import { Request, Response } from "express"
+import sobreModel from "../models/sobreModel"
 
-async function buscar(req, res) {
+async function buscar(req: Request, res: Response): Promise<void> {
   try {
     const sobre = await sobreModel.buscarSobre()
     res.json(sobre)
@@ -9,7 +10,7 @@ async function buscar(req, res) {
   }
 }
 
-async function atualizar(req, res) {
+async function atualizar(req: Request, res: Response): Promise<void> {
   try {
     const { titulo, texto } = req.body
     await sobreModel.atualizarSobre(titulo, texto)
@@ -19,4 +20,4 @@ async function atualizar(req, res) {
   }
 }
 
-module.exports = { buscar, atualizar }
+export default { buscar, atualizar }

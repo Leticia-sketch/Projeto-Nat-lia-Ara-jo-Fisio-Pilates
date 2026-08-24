@@ -13,6 +13,8 @@ import depoimentosRoutes from "./routes/depoimentosRoutes"
 import heroRoutes from "./routes/heroRoutes"
 import sobreRoutes from "./routes/sobreRoutes"
 import footerRoutes from "./routes/footerRoutes"
+import authRoutes from "./routes/authRoutes"
+import authMiddleware from "./middlewares/authMiddleware"
 
 const app = express()
 
@@ -21,7 +23,7 @@ app.use(express.json())
 
 app.use(
   session({
-    secret: "studio-secreto",
+    secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -45,30 +47,10 @@ app.use("/depoimentos", depoimentosRoutes)
 app.use("/hero", heroRoutes)
 app.use("/sobre", sobreRoutes)
 app.use("/footer", footerRoutes)
+app.use("/auth", authRoutes)
 
-// LOGIN
-app.post("/login", (req: Request, res: Response) => {
-  const { email, senha } = req.body
-
-  if (
-    email === "nataliaaraujofisiopilates@gmail.com" &&
-    senha === "123456"
-  ) {
-    ;(req.session as any).admin = true
-    return res.json({ sucesso: true })
-  }
-
-  return res.status(401).json({
-    erro: "Email ou senha inválidos",
-  })
-})
-
-// DASHBOARD
-app.get("/dashboard", (req: Request, res: Response) => {
-  if (!(req.session as any).admin) {
-    return res.redirect("/login.html")
-  }
-
+// DASHBOARD (protegido pelo middleware, não mais checagem manual)
+app.get("/dashboard", authMiddleware, (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../dashboard.html"))
 })
 
