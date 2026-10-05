@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Request, Response, NextFunction } from "express"
 import servicosModel from "../models/servicosModel"
 
 async function buscar(req: Request, res: Response): Promise<void> {
@@ -10,34 +10,34 @@ async function buscar(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function atualizar(req: Request, res: Response): Promise<void> {
+async function atualizar(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const id = req.params.id as string
     const { titulo, img, texto } = req.body
     await servicosModel.atualizarServico(id, titulo, img, texto)
     res.json({ sucesso: true })
   } catch (erro) {
-    res.status(500).json({ erro: "Erro ao atualizar serviço" })
+    next(erro)
   }
 }
 
-async function criar(req: Request, res: Response): Promise<void> {
+async function criar(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { titulo, img, texto } = req.body
     await servicosModel.criarServico(titulo, img, texto)
     res.json({ sucesso: true })
   } catch (erro) {
-    res.status(500).json({ erro: "Erro ao criar serviço" })
+    next(erro)
   }
 }
 
-async function deletar(req: Request, res: Response): Promise<void> {
+async function deletar(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const id = req.params.id as string
     await servicosModel.deletarServico(id)
     res.json({ sucesso: true })
   } catch (erro) {
-    res.status(500).json({ erro: "Erro ao deletar serviço" })
+    next(erro)
   }
 }
 

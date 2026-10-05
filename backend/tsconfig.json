@@ -16,7 +16,13 @@
     "database/**/*",
     "types/**/*",
     "middlewares/**/*",
+    "prisma/**/*",
+    "services/**/*",
+    "schemas/**/*",
     "server.ts"
   ],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

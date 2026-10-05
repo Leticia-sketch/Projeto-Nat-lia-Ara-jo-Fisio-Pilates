@@ -34,4 +34,15 @@ async function criar(req: Request, res: Response): Promise<void> {
   }
 }
 
-export default { listar, atualizar, criar }
+async function deletar(req: Request, res: Response): Promise<void> {
+  try {
+    const id = req.params.id as string
+    await planosDetalhadosModel.deletarPlanoDetalhado(id)
+    res.status(200).json({ sucesso: true })
+  } catch (erro) {
+    console.error(erro)
+    res.status(500).json({ erro: "Erro ao deletar plano detalhado" })
+  }
+}
+
+export default { listar, atualizar, criar, deletar }

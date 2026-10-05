@@ -1,16 +1,16 @@
 import { PrismaClient } from "@prisma/client"
-import bcrypt from "bcrypt"
+import argon2 from "argon2"
 
 const prisma = new PrismaClient()
 
-async function main() {
+async function seedAdmin() {
   const senha = process.env.SEED_ADMIN_PASSWORD
 
   if (!senha) {
     throw new Error("SEED_ADMIN_PASSWORD não foi definida no .env")
   }
 
-  const senhaHash = await bcrypt.hash(senha, 10)
+  const senhaHash = await argon2.hash(senha)
 
   await prisma.admin.upsert({
     where: {
@@ -23,6 +23,15 @@ async function main() {
       senhaHash
     }
   })
+}
+async function main() {
+  await seedAdmin()
+    const heroExistente = await prisma.hero.findFirst()
+
+  if (heroExistente) {
+    console.log("Conteúdo já existe, seed de conteúdo pulado.")
+    return
+  }
   await prisma.hero.create({
     data: { titulo: "Natália Araújo - FisioPilates", botao: "Agende agora" }
   })

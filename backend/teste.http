@@ -80,7 +80,7 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### 8b. Cadastro com e-mail já existente (deve dar 409)
+### 8b. Cadastro com e-mail já existente (409 — Prisma P2002 via errorHandler)
 POST http://localhost:3000/auth/registrar
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
@@ -100,9 +100,149 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### 10. Tentativa de acessar rota protegida DEPOIS do logout (deve voltar 401)
+### 10. Tentativa de acessar rota protegida DEPOIS do logout
 GET http://localhost:3000/auth/me
 Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+###
+
+### ==================
+### VALIDAÇÃO (ZOD) — corpo inválido, 400 via errorHandler
+### ==================
+
+### 11. Login com corpo inválido (e-mail mal formatado) — 400 com issues[path, message]
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "nao-e-um-email",
+  "senha": "123456"
+}
+
+###
+
+### 12. Login com campo obrigatório ausente — 400
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "nataliaaraujofisiopilates@gmail.com"
+}
+
+###
+
+### 13. Cadastro com senha curta demais — 400
+POST http://localhost:3000/auth/registrar
+Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+{
+  "nome": "Teste",
+  "email": "outroteste@gmail.com",
+  "senha": "123"
+}
+
+###
+
+### 14. Caso inválido — id inexistente (404 via errorHandler, Prisma P2025)
+PUT http://localhost:3000/servicos/9999
+Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+{
+  "titulo": "Teste inválido",
+  "img": "",
+  "texto": ""
+}
+
+###
+### 21. Parâmetro de rota inválido — id não numérico (400)
+PUT http://localhost:3000/servicos/abc
+Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+{
+  "titulo": "Teste",
+  "img": "",
+  "texto": ""
+}
+
+###
+
+### 22. Query inválida — página negativa (400)
+GET http://localhost:3000/depoimentos?pagina=-1
+
+###
+
+### 23. Query válida — paginação opcional (200, filtro não obrigatório)
+GET http://localhost:3000/depoimentos?pagina=1&limite=3
+
+### ==================
+### ESQUECI / REDEFINIR SENHA (dispara e-mail via Nodemailer + Ethereal)
+### ==================
+
+### 15. Esqueci a senha — e-mail válido e cadastrado
+# Dispara o e-mail; confira a URL de preview do Ethereal no terminal do servidor
+POST http://localhost:3000/auth/esqueci-senha
+Content-Type: application/json
+
+{
+  "email": "nataliaaraujofisiopilates@gmail.com"
+}
+
+###
+
+### 16. Esqueci a senha — corpo inválido (e-mail mal formatado) — 400
+POST http://localhost:3000/auth/esqueci-senha
+Content-Type: application/json
+
+{
+  "email": "isso-nao-e-email"
+}
+
+###
+
+### 17. Esqueci a senha — e-mail não cadastrado
+# Mesma resposta 200 genérica do item 15, mas SEM e-mail sendo enviado (confira o terminal)
+POST http://localhost:3000/auth/esqueci-senha
+Content-Type: application/json
+
+{
+  "email": "naoexiste@gmail.com"
+}
+
+###
+
+### 18. Redefinir senha — token com formato inválido (não tem 64 caracteres) — 400
+POST http://localhost:3000/auth/redefinir-senha
+Content-Type: application/json
+
+{
+  "token": "token-muito-curto",
+  "novaSenha": "senhaNova123"
+}
+
+###
+
+### 19. Redefinir senha — token válido (COLE aqui o token copiado do e-mail do item 15)
+POST http://localhost:3000/auth/redefinir-senha
+Content-Type: application/json
+
+{
+  "token": "COLE_AQUI_O_TOKEN_DO_EMAIL",
+  "novaSenha": "senhaNova123"
+}
+
+###
+
+### 20. Redefinir senha — reusar o MESMO token do item 19 (deve dar 400, prova que é single-use)
+POST http://localhost:3000/auth/redefinir-senha
+Content-Type: application/json
+
+{
+  "token": "COLE_AQUI_O_MESMO_TOKEN_DO_ITEM_19",
+  "novaSenha": "outraSenha456"
+}
 
 ###
 
@@ -115,7 +255,7 @@ GET http://localhost:3000/hero
 
 ###
 
-### PUT - Atualizar hero SEM login (deve dar 401)
+### PUT - Atualizar hero SEM login
 PUT http://localhost:3000/hero
 Content-Type: application/json
 
@@ -189,7 +329,7 @@ GET http://localhost:3000/servicos
 
 ###
 
-### POST - Criar serviço SEM login (deve dar 401)
+### POST - Criar serviço SEM login
 POST http://localhost:3000/servicos
 Content-Type: application/json
 
@@ -311,6 +451,12 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
     { "nome": "Semestral", "preco": "R$ 160" }
   ]
 }
+
+###
+
+### DELETE - Deletar plano detalhado COM login
+DELETE http://localhost:3000/planos-detalhados/1
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 

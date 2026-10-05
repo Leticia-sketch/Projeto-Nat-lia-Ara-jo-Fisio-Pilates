@@ -22,4 +22,10 @@ async function criarPlanoDetalhado(titulo: string, opcoes: any[]) {
   })
 }
 
-export default { buscarPlanosDetalhados, atualizarPlanoDetalhado, criarPlanoDetalhado }
+async function deletarPlanoDetalhado(id: string) {
+  await prisma.planoDetalhado.delete({
+    where: { id: Number(id) }
+  })
+}
+
+export default { buscarPlanosDetalhados, atualizarPlanoDetalhado, criarPlanoDetalhado, deletarPlanoDetalhado }

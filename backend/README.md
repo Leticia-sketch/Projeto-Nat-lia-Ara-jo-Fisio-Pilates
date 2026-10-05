@@ -10,8 +10,10 @@ Sistema web completo para gerenciamento do estúdio de fisioterapia e pilates.
 - Prisma ORM
 - MySQL
 - tsx
-- bcrypt (hash de senhas)
+- argon2 (hash de senhas)
 - express-session (autenticação por sessão)
+- Zod (validação de dados de entrada)
+- Nodemailer (envio de e-mail, com conta de teste Ethereal em desenvolvimento)
 
 ## Estrutura do Projeto
 
@@ -23,7 +25,11 @@ backend/
 
 ├── routes/            # Definição dos endpoints
 
-├── middlewares/       # Middleware de autenticação
+├── middlewares/       # Autenticação, validação e tratamento de erros
+
+├── schemas/           # Schemas Zod (validação de body/params/query)
+
+├── services/          # Serviços isolados (ex: envio de e-mail)
 
 ├── database/          # Configuração do Prisma Client
 
@@ -39,7 +45,9 @@ backend/
 
 ├── server.ts          # Entrada da aplicação
 
-├── .env               # Variáveis de ambiente
+├── .env               # Variáveis de ambiente (não versionado)
+
+├── .env.example       # Modelo das variáveis de ambiente (sem credenciais reais)
 
 └── ERD.svg            # Diagrama ERD
 
@@ -53,12 +61,16 @@ npm install
 
 ## Configurar o Banco e Variáveis de Ambiente
 
-Crie um banco MySQL chamado `studio_pilates` e configure o `.env` com três variáveis:
+Crie um banco MySQL chamado `studio_pilates`. O arquivo `.env.example` documenta todas as variáveis necessárias; copie-o para `.env` e preencha com valores reais:
 
 ```env
 DATABASE_URL="mysql://root:SUA_SENHA@localhost:3306/studio_pilates"
 SESSION_SECRET="uma-string-aleatoria-grande-aqui"
 SEED_ADMIN_PASSWORD="senha-da-conta-administrativa-inicial"
+SMTP_HOST=smtp.ethereal.email
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
 ```
 
 - `DATABASE_URL` — conexão do Prisma com o MySQL.
@@ -67,8 +79,12 @@ SEED_ADMIN_PASSWORD="senha-da-conta-administrativa-inicial"
   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 - `SEED_ADMIN_PASSWORD` — senha em texto puro usada **apenas no momento do seed** para gerar o hash da conta administrativa inicial. O seed falha propositalmente se essa variável não estiver definida, para nunca criar uma senha padrão conhecida.
+- `SMTP_HOST`/`SMTP_PORT`/`SMTP_USER`/`SMTP_PASS` — configuração do servidor de e-mail. Se `SMTP_USER`/`SMTP_PASS` ficarem vazios, o `services/SendMail.ts` gera automaticamente uma conta de teste Ethereal a cada envio (nenhum e-mail real é enviado; um link de preview aparece no terminal). Para uma conta Ethereal fixa, gere uma com:
+```bash
+  node -e "const nm=require('nodemailer'); nm.createTestAccount().then(c=>console.log('SMTP_USER='+c.user+'\nSMTP_PASS='+c.pass))"
+```
 
-O `.env` nunca deve ser commitado — ele já está no `.gitignore`.
+O `.env` nunca deve ser commitado — ele já está no `.gitignore`. O `.env.example` **é** versionado e serve apenas de referência, sem nenhum valor sensível real.
 
 ## Criar as Tabelas
 
@@ -82,7 +98,7 @@ npx prisma migrate dev --name init
 npx prisma db seed
 ```
 
-Isso cria os dados iniciais do site **e** a conta administrativa única (usando `SEED_ADMIN_PASSWORD`, com a senha já hasheada via bcrypt antes de ir para o banco).
+Isso cria os dados iniciais do site **e** a conta administrativa única (usando `SEED_ADMIN_PASSWORD`, com a senha já hasheada via argon2 antes de ir para o banco). O seed é seguro para rodar mais de uma vez: o conteúdo do site só é criado na primeira execução (verifica se já existe antes de inserir), e o admin usa `upsert` pelo e-mail.
 
 ## Executar em Desenvolvimento
 
@@ -103,76 +119,39 @@ O model `Admin` (`prisma/schema.prisma`) guarda:
 | `id` | Int | chave primária |
 | `nome` | String | |
 | `email` | String | `@unique` — impede duas contas com o mesmo e-mail |
-| `senhaHash` | String | hash bcrypt (custo 10) — a senha em texto puro nunca é armazenada |
+| `senhaHash` | String | hash **argon2** — a senha em texto puro nunca é armazenada |
+| `resetTokenHash` | String? | hash SHA-256 do token de redefinição de senha (nulo fora da janela de redefinição) |
+| `resetTokenExpiry` | DateTime? | expiração do token de redefinição (15 minutos) |
 | `createdAt` / `updatedAt` | DateTime | controle de datas |
 
-A tentativa de criar um e-mail duplicado é rejeitada pelo próprio MySQL (constraint `UNIQUE`); o Prisma traduz isso em um erro `P2002`, que o `authController` converte em `409 Conflict`.
+A tentativa de criar um e-mail duplicado é rejeitada pelo próprio MySQL (constraint `UNIQUE`); o Prisma traduz isso em um erro `P2002`, capturado pelo middleware de erros e convertido em `409 Conflict`.
 
 ### Fluxo de login e sessão
 
 A sessão é mantida via `express-session` (cookie assinado com `SESSION_SECRET`, guardado em memória no processo do servidor).
 
-
 A mensagem de erro é sempre a mesma para "usuário não existe" e "senha incorreta" — evita que a API revele se um e-mail está cadastrado.
 
-### Rotas de autenticação
+### Validação de dados (Zod)
 
-| Método | Rota | Descrição | Protegida? |
-|---|---|---|---|
-| POST | /auth/login | Login | Não |
-| POST | /auth/logout | Encerra a sessão | Não |
-| GET | /auth/me | Retorna o admin autenticado | Sim |
-| POST | /auth/registrar | Cria um novo admin | **Sim** — só um admin já logado pode criar outro |
+Toda entrada de `body`, `params` e `query` é validada por schemas Zod antes de chegar ao Controller:
 
-`registrar` existe para demonstrar o fluxo de cadastro exigido pela avaliação, mas fica atrás do `authMiddleware` de propósito: não há formulário público de cadastro, coerente com a regra de negócio de uma única administradora.
+- `schemas/authSchemas.ts` — `body` de login, cadastro, esqueci-senha e redefinir-senha (e-mail válido, senha mínima, token com formato correto).
+- `schemas/comumSchemas.ts` — `params.id` (número inteiro positivo, reutilizado em todas as rotas com `:id`) e `query` de paginação opcional em `/depoimentos`.
 
-### Middleware de autenticação
+O middleware genérico `middlewares/validate.ts` recebe `{ body?, params?, query? }`, roda `safeParse` em cada fonte informada e, em caso de falha, repassa o erro para o middleware de erros com `next(erro)` — os Controllers e Models não fazem nenhuma verificação manual de formato com `if`.
 
-`middlewares/authMiddleware.ts` verifica `req.session.admin`. Se não existir, responde `401 { erro: "Não autenticado" }` e interrompe a requisição; caso contrário, deixa passar (`next()`).
+### Tratamento centralizado de erros
 
-Esse middleware protege:
-- `GET /dashboard` (o HTML do painel só é servido para quem está autenticado)
-- Todos os métodos de **escrita** (`POST`/`PUT`/`DELETE`) das rotas de conteúdo abaixo
+`middlewares/errorHandler.ts` é o único lugar que decide o status HTTP de erro, registrado como o último `app.use()` do `server.ts`:
 
-Os métodos `GET` de conteúdo continuam públicos, pois alimentam o site institucional, visitado por qualquer pessoa sem login.
+| Status | Origem | Exemplo no projeto |
+|---|---|---|
+| `400 Bad Request` | `ZodError` (formato inválido) | e-mail mal formatado no login, senha curta no cadastro, `id` não numérico em `PUT /servicos/abc` |
+| `404 Not Found` | Prisma `P2025` (registro inexistente) | `PUT /servicos/9999` |
+| `409 Conflict` | Prisma `P2002` (violação de `UNIQUE`) | `POST /auth/registrar` com e-mail já cadastrado |
+| `500 Internal Server Error` | qualquer erro não previsto | fallback, nunca expõe detalhe interno ao cliente |
 
-## Endpoints da API
+A resposta de `400` sempre inclui uma lista `issues` com `path` (campo que falhou) e `message` (motivo), extraída diretamente do `ZodError`.
 
-| Método | Rota | Descrição | Protegida? |
-|--------|------|-----------|---|
-| GET | /dados | Todos os dados do site | Não |
-| GET | /hero | Hero | Não |
-| PUT | /hero | Atualizar hero | Sim |
-| GET | /estudio | Estúdio | Não |
-| POST/PUT/DELETE | /estudio | Gerenciar estúdio | Sim |
-| GET | /sobre | Sobre | Não |
-| PUT | /sobre | Atualizar sobre | Sim |
-| GET | /servicos | Serviços | Não |
-| POST/PUT/DELETE | /servicos | Gerenciar serviços | Sim |
-| GET | /planos | Planos | Não |
-| POST/PUT/DELETE | /planos | Gerenciar planos | Sim |
-| GET | /planos-detalhados | Planos Detalhados | Não |
-| POST/PUT | /planos-detalhados | Gerenciar planos detalhados | Sim |
-| GET | /depoimentos | Depoimentos | Não |
-| POST/PUT/DELETE | /depoimentos | Gerenciar depoimentos | Sim |
-| GET | /footer | Footer | Não |
-| PUT | /footer | Atualizar footer | Sim |
-| POST | /auth/login | Login | Não |
-| POST | /auth/logout | Logout | Não |
-| GET | /auth/me | Admin autenticado | Sim |
-| POST | /auth/registrar | Criar novo admin | Sim |
-
-## Testando a Autenticação
-
-O arquivo `teste.http` (extensão REST Client do VS Code) cobre os fluxos de autenticação, incluindo:
-
-- Login válido, com senha incorreta e com usuário inexistente
-- Acesso ao dashboard e a `/auth/me` sem autenticação (401)
-- Acesso às mesmas rotas autenticado (200), reaproveitando o cookie de sessão retornado pelo login
-- Cadastro de novo admin e tentativa de cadastro com e-mail duplicado (409)
-- Logout e tentativa de acesso à rota protegida depois do logout (401)
-- Cada rota de conteúdo tem exemplos de escrita sem login (401) e com login (sucesso)
-
-## Autor
-
-Desenvolvido por Ana Leticia
+### Redefinição de senha (e envio de e-mail)

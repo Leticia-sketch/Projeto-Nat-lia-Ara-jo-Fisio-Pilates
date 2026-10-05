@@ -15,6 +15,7 @@ import sobreRoutes from "./routes/sobreRoutes"
 import footerRoutes from "./routes/footerRoutes"
 import authRoutes from "./routes/authRoutes"
 import authMiddleware from "./middlewares/authMiddleware"
+import errorHandler from "./middlewares/errorHandler"
 
 const app = express()
 
@@ -53,6 +54,9 @@ app.use("/auth", authRoutes)
 app.get("/dashboard", authMiddleware, (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../dashboard.html"))
 })
+
+// ERROR HANDLER — precisa ser o ÚLTIMO app.use(), depois de todas as rotas
+app.use(errorHandler)
 
 app.listen(3000, () => {
   console.log("Servidor rodando em http://localhost:3000")
