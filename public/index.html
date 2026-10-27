@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Estúdio Natália Araújo FisioPilates em João Pessoa - PB: fisioterapia e Pilates terapêutico, com especialidade no tratamento de escoliose e deformidades da coluna.">
+    <meta name="theme-color" content="#175292">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Natália Araújo - Fisio Pilates">
+    <meta property="og:description" content="Fisioterapia e Pilates terapêutico em João Pessoa - PB.">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <title>Natália Araújo - Fisio Pilates</title>
 
@@ -16,7 +22,18 @@
 
     <header>
         <nav>
-            <ul>
+            <a href="#" class="logo">
+                <img src="img/favicon.ico" alt="Logo Natália Araújo FisioPilates">
+            </a>
+
+            <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Abrir ou fechar o menu">
+            <label for="menu-toggle" class="menu-icone" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <ul class="menu">
                 <li><a href="#">Página Inicial</a></li>
                 <li><a href="#estudio">Estúdio</a></li>
                 <li><a href="#sobre">Sobre mim</a></li>
@@ -24,7 +41,7 @@
                 <li><a href="#planos">Planos</a></li>
                 <li><a href="#depoimentos">Depoimentos</a></li>
                 <li><a href="#footer">Contato</a></li>
-                <li><a href="login.html" class="login-btn">Login</a></li>
+                <li class="item-login"><a href="login.html" class="login-btn">ADM</a></li>
             </ul>
         </nav>
     </header>
@@ -32,29 +49,33 @@
     <section class="hero">
         <div class="hero-text">
             <h1 id="tituloHero"></h1>
-            <a href="#" class="btn" id="botaoHero"></a>
+            <a href="https://wa.me/558388435842" target="_blank" rel="noopener" class="btn" id="botaoHero"></a>
         </div>
     </section>
 
     <section class="estudio" id="estudio">
         <div class="estudio-grid">
-            <div class="relative w-[400px] overflow-hidden rounded-2xl" id="carousel">
+            <div class="relative w-full max-w-[400px] overflow-hidden rounded-2xl" id="carousel">
 
                 <div class="flex transition-transform duration-500 items-center" id="carouselTrack">
-                    <img src="img/studio1.jpeg" class="carousel-item">
-                    <img src="img/studio2.jpeg" class="carousel-item">
-                    <img src="img/studio3.jpeg" class="carousel-item">
-                    <img src="img/studio4.jpeg" class="carousel-item">
+                    <img src="img/studio1.jpeg" class="carousel-item"
+                        alt="Estúdio Natália Araújo FisioPilates - foto 1">
+                    <img src="img/studio2.jpeg" class="carousel-item"
+                        alt="Estúdio Natália Araújo FisioPilates - foto 2">
+                    <img src="img/studio3.jpeg" class="carousel-item"
+                        alt="Estúdio Natália Araújo FisioPilates - foto 3">
+                    <img src="img/studio4.jpeg" class="carousel-item"
+                        alt="Estúdio Natália Araújo FisioPilates - foto 4">
                 </div>
 
-                <button id="prev" class="absolute left-4 top-1/2 -translate-y-1/2 
+                <button id="prev" aria-label="Foto anterior" class="absolute left-4 top-1/2 -translate-y-1/2 
 bg-white/80 backdrop-blur-md 
 w-10 h-10 flex items-center justify-center 
 rounded-full shadow-lg hover:scale-110 transition">
                     ❮
                 </button>
 
-                <button id="next" class="absolute right-4 top-1/2 -translate-y-1/2 
+                <button id="next" aria-label="Próxima foto" class="absolute right-4 top-1/2 -translate-y-1/2 
 bg-white/80 backdrop-blur-md 
 w-10 h-10 flex items-center justify-center 
 rounded-full shadow-lg hover:scale-110 transition">
@@ -62,33 +83,33 @@ rounded-full shadow-lg hover:scale-110 transition">
                 </button>
             </div>
             <div class="estudio-texto">
-                <h2 id="tituloEstudio"></h2>
+                <h2 id="tituloEstudio" class="titulo-secao esquerda"></h2>
                 <p id="textoEstudio"></p>
             </div>
         </div>
     </section>
 
     <section class="sobre" id="sobre">
-        <div class="sobre-grid gap-40">
+        <div class="sobre-grid">
             <div class="sobre-texto opacity-0 -translate-x-20 transition-all duration-[1500ms]" id="animSobreTexto">
-                <h2 id="tituloSobre"></h2>
+                <h2 id="tituloSobre" class="titulo-secao esquerda"></h2>
                 <ul id="listaSobre"></ul>
                 <p id="textoSobre"></p>
             </div>
-            <img src="img/natalia.jpeg" class="opacity-0 translate-x-20 transition-all duration-[1500ms]"
-                id="animSobreImg">
+            <img src="img/natalia.jpeg" alt="Natália Araújo, fisioterapeuta"
+                class="opacity-0 translate-x-20 transition-all duration-[1500ms]" id="animSobreImg">
         </div>
     </section>
 
     <section class="servicos" id="servicos">
-        <h2 id="tituloServicos"></h2>
+        <h2 id="tituloServicos" class="titulo-secao"></h2>
         <div class="servicos-grid" id="servicosContainer"></div>
     </section>
 
-    <section id="planos" class="py-20 bg-[#f5f7f8]">
+    <section id="planos" class="py-14 md:py-20">
         <div class="max-w-5xl mx-auto px-6">
 
-            <h2 class="text-4xl font-bold text-center mb-12 text-[#3986C5]">
+            <h2 class="titulo-secao">
                 Planos e Preços
             </h2>
 
@@ -97,11 +118,11 @@ rounded-full shadow-lg hover:scale-110 transition">
         </div>
     </section>
 
-    <section id="depoimentos" class="py-20 bg-[#f5f7f8]">
+    <section id="depoimentos" class="py-14 md:py-20">
 
         <div class="max-w-6xl mx-auto px-6">
 
-            <h2 class="text-4xl font-bold text-center mb-10">
+            <h2 class="titulo-secao">
                 Depoimentos
             </h2>
 
@@ -110,18 +131,20 @@ rounded-full shadow-lg hover:scale-110 transition">
                 <!-- TRACK -->
                 <div id="depoTrack" class="flex transition-transform duration-500">
 
-                    
+
 
                 </div>
 
                 <!-- BOTÕES -->
                 <div class="flex justify-center gap-4 mt-6">
 
-                    <button id="depPrev" class="bg-white px-4 py-2 rounded shadow hover:bg-gray-100">
+                    <button id="depPrev" aria-label="Depoimento anterior"
+                        class="bg-white px-4 py-2 rounded shadow hover:bg-gray-100">
                         ❮
                     </button>
 
-                    <button id="depNext" class="bg-white px-4 py-2 rounded shadow hover:bg-gray-100">
+                    <button id="depNext" aria-label="Próximo depoimento"
+                        class="bg-white px-4 py-2 rounded shadow hover:bg-gray-100">
                         ❯
                     </button>
 
@@ -132,6 +155,7 @@ rounded-full shadow-lg hover:scale-110 transition">
         </div>
 
     </section>
+
     <!-- Parte do footer do contato-->
 
     <footer id="footer" class="text-white py-16">
@@ -144,7 +168,7 @@ rounded-full shadow-lg hover:scale-110 transition">
 
                 <p id="footerDescricao" class="text-gray-300 text-sm leading-relaxed"></p>
 
-                <p class="text-black text-xs mt-6">
+                <p class="text-white/70 text-xs mt-6">
                     © 2026 Studio de Pilates
                 </p>
             </div>
@@ -169,7 +193,8 @@ rounded-full shadow-lg hover:scale-110 transition">
                 <h2 class="text-lg font-semibold mb-4">Localização</h2>
 
                 <div class="w-full h-[200px] rounded-xl overflow-hidden">
-                    <iframe id="footerMapa" class="w-full h-full border-0" loading="lazy">
+                    <iframe id="footerMapa" title="Mapa de localização do estúdio" class="w-full h-full border-0"
+                        loading="lazy">
                     </iframe>
                 </div>
             </div>
@@ -178,9 +203,23 @@ rounded-full shadow-lg hover:scale-110 transition">
 
     </footer>
 
-
+    <!-- Botão flutuante do WhatsApp -->
+    <a href="https://wa.me/558388435842" target="_blank" rel="noopener" class="whatsapp-flutuante"
+        aria-label="Fale conosco pelo WhatsApp">
+        <span aria-hidden="true">💬</span>
+        <span class="whatsapp-texto">Fale conosco</span>
+    </a>
 
     <script type="module" src="js/main.js"></script>
+
+    <!-- fecha o menu do celular ao tocar em um link -->
+    <script>
+        document.querySelectorAll('.menu a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                document.getElementById('menu-toggle').checked = false
+            })
+        })
+    </script>
 
 </body>
 

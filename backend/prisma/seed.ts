@@ -5,28 +5,29 @@ const prisma = new PrismaClient()
 
 async function seedAdmin() {
   const senha = process.env.SEED_ADMIN_PASSWORD
+  const email = process.env.SEED_ADMIN_EMAIL
 
-  if (!senha) {
-    throw new Error("SEED_ADMIN_PASSWORD não foi definida no .env")
+  if (!senha || !email) {
+    throw new Error("SEED_ADMIN_EMAIL e SEED_ADMIN_PASSWORD precisam estar definidos no .env")
   }
 
   const senhaHash = await argon2.hash(senha)
 
   await prisma.admin.upsert({
-    where: {
-      email: "nataliaaraujofisiopilates@gmail.com"
-    },
+    where: { email },
     update: {},
     create: {
-      nome: "Natália Araújo",
-      email: "nataliaaraujofisiopilates@gmail.com",
+      nome: process.env.SEED_ADMIN_NAME || "Natália Araújo",
+      email,
       senhaHash
     }
   })
 }
+
 async function main() {
   await seedAdmin()
-    const heroExistente = await prisma.hero.findFirst()
+
+  const heroExistente = await prisma.hero.findFirst()
 
   if (heroExistente) {
     console.log("Conteúdo já existe, seed de conteúdo pulado.")
@@ -118,5 +119,8 @@ async function main() {
 }
 
 main()
-  .catch(console.error)
+  .catch((erro) => {
+    console.error(erro)
+    process.exitCode = 1
+  })
   .finally(() => prisma.$disconnect())

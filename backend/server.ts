@@ -19,24 +19,44 @@ import errorHandler from "./middlewares/errorHandler"
 
 const app = express()
 
+const PRODUCAO = process.env.NODE_ENV === "production"
+const PORTA = Number(process.env.PORT) || 3000
+
+// Pasta que contém "public" e "dashboard.html" (a pasta acima de "backend").
+// O servidor deve ser iniciado de dentro de "backend" (npm run dev / npm start).
+const RAIZ_DO_PROJETO = path.resolve(process.cwd(), "..")
+
+const SEGREDO_SESSAO = process.env.SESSION_SECRET
+
+if (!SEGREDO_SESSAO) {
+  throw new Error("SESSION_SECRET não foi definido nas variáveis de ambiente")
+}
+
+// Em produção o Render fica na frente do servidor (proxy HTTPS)
+if (PRODUCAO) {
+  app.set("trust proxy", 1)
+}
+
 app.use(cors())
 app.use(express.json())
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET as string,
+    secret: SEGREDO_SESSAO,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+      secure: PRODUCAO,
     },
   })
 )
 
-app.use(morgan("dev"))
+app.use(morgan(PRODUCAO ? "combined" : "dev"))
 
 // Arquivos estáticos
-app.use(express.static(path.join(__dirname, "../public")))
+app.use(express.static(path.join(RAIZ_DO_PROJETO, "public")))
 
 // ROTAS
 app.use("/estudio", estudioRoutes)
@@ -50,14 +70,14 @@ app.use("/sobre", sobreRoutes)
 app.use("/footer", footerRoutes)
 app.use("/auth", authRoutes)
 
-// DASHBOARD (protegido pelo middleware, não mais checagem manual)
+// DASHBOARD (protegido pelo middleware)
 app.get("/dashboard", authMiddleware, (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "../dashboard.html"))
+  res.sendFile(path.join(RAIZ_DO_PROJETO, "dashboard.html"))
 })
 
 // ERROR HANDLER — precisa ser o ÚLTIMO app.use(), depois de todas as rotas
 app.use(errorHandler)
 
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000")
+app.listen(PORTA, () => {
+  console.log(`Servidor rodando na porta ${PORTA}`)
 })

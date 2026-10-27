@@ -1,9 +1,23 @@
+### ==================================================
+### TESTES DA API (REST Client)
+### ==================================================
+# Rode SEMPRE contra o servidor local (npm run dev) e um banco de teste.
+# Os blocos de escrita alteram e apagam dados de verdade.
+# E-mails e senhas vêm do arquivo .env (mesma pasta), nunca escritos aqui:
+#   SEED_ADMIN_EMAIL e SEED_ADMIN_PASSWORD -> conta do admin
+#   TESTE_EMAIL                            -> e-mail seu, para receber os e-mails de teste
+# Rode o item 1 (login) antes dos blocos que usam o cookie.
+
+@host = http://localhost:3000
+
+###
+
 ### ==================
 ### DADOS GERAIS (público)
 ### ==================
 
-### GET - Buscar todos os dados do site (parte pública)
-GET http://localhost:3000/dados
+### GET - Buscar todos os dados do site
+GET {{host}}/dados
 
 ###
 
@@ -12,106 +26,96 @@ GET http://localhost:3000/dados
 ### ==================
 
 ### 1. Login válido (admin do seed)
+# Se você já redefiniu a senha desse admin, ela deixa de ser a do .env
 # @name loginValido
-POST http://localhost:3000/auth/login
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "nataliaaraujofisiopilates@gmail.com",
-  "senha": "natália12345"
+  "email": "{{$dotenv SEED_ADMIN_EMAIL}}",
+  "senha": "{{$dotenv SEED_ADMIN_PASSWORD}}"
 }
 
 ###
 
-### 2. Login com senha incorreta
-POST http://localhost:3000/auth/login
+### 2. Login com senha incorreta (401)
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "nataliaaraujofisiopilates@gmail.com",
-  "senha": "senhaerrada"
+  "email": "{{$dotenv SEED_ADMIN_EMAIL}}",
+  "senha": "senha-incorreta"
 }
 
 ###
 
-### 3. Login com usuário inexistente
-POST http://localhost:3000/auth/login
+### 3. Login com usuário inexistente (401)
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "naoexiste@gmail.com",
+  "email": "naoexiste@exemplo.com",
   "senha": "qualquer123"
 }
 
 ###
 
-### 4. Acesso ao dashboard SEM autenticação
-GET http://localhost:3000/dashboard
+### 4. Acesso ao dashboard SEM autenticação (401)
+GET {{host}}/dashboard
 
 ###
 
-### 5. Acesso ao /auth/me SEM autenticação
-GET http://localhost:3000/auth/me
+### 5. Acesso ao /auth/me SEM autenticação (401)
+GET {{host}}/auth/me
 
 ###
 
-### 6. Acesso ao dashboard usando o cookie do login válido (item 1)
-GET http://localhost:3000/dashboard
+### 6. Acesso ao dashboard COM o cookie do login (200)
+GET {{host}}/dashboard
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### 7. Acesso ao /auth/me autenticado
-GET http://localhost:3000/auth/me
+### 7. Acesso ao /auth/me autenticado (200)
+GET {{host}}/auth/me
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### 8. Cadastro de novo admin (rota protegida — só funciona autenticado)
-POST http://localhost:3000/auth/registrar
+### 8. Cadastro de admin de teste (rota protegida; dispara e-mail de boas-vindas)
+# Usa o TESTE_EMAIL do .env. Se esse e-mail já for admin, dá 409.
+# Apague esse admin de teste no fim (veja a LIMPEZA no final do arquivo).
+POST {{host}}/auth/registrar
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
-  "nome": "Admin Teste",
-  "email": "adminteste@gmail.com",
-  "senha": "senhaTeste123"
+  "nome": "Admin de Teste",
+  "email": "{{$dotenv TESTE_EMAIL}}",
+  "senha": "SenhaDeTeste123"
 }
 
 ###
 
-### 8b. Cadastro com e-mail já existente (409 — Prisma P2002 via errorHandler)
-POST http://localhost:3000/auth/registrar
+### 9. Cadastro com e-mail já existente (409, Prisma P2002 via errorHandler)
+POST {{host}}/auth/registrar
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "nome": "Duplicado",
-  "email": "nataliaaraujofisiopilates@gmail.com",
-  "senha": "outrasenha"
+  "email": "{{$dotenv SEED_ADMIN_EMAIL}}",
+  "senha": "SenhaDeTeste123"
 }
 
 ###
 
-### 9. Logout
-# @name logout
-POST http://localhost:3000/auth/logout
-Cookie: {{loginValido.response.headers.Set-Cookie}}
-
-###
-
-### 10. Tentativa de acessar rota protegida DEPOIS do logout
-GET http://localhost:3000/auth/me
-Cookie: {{loginValido.response.headers.Set-Cookie}}
-
-###
-
 ### ==================
-### VALIDAÇÃO (ZOD) — corpo inválido, 400 via errorHandler
+### VALIDAÇÃO (ZOD): body, params e query (400 via errorHandler)
 ### ==================
 
-### 11. Login com corpo inválido (e-mail mal formatado) — 400 com issues[path, message]
-POST http://localhost:3000/auth/login
+### 10. Login com e-mail mal formatado (400, issues com path e message)
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
@@ -121,43 +125,31 @@ Content-Type: application/json
 
 ###
 
-### 12. Login com campo obrigatório ausente — 400
-POST http://localhost:3000/auth/login
+### 11. Login com campo obrigatório ausente (400)
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "nataliaaraujofisiopilates@gmail.com"
+  "email": "{{$dotenv SEED_ADMIN_EMAIL}}"
 }
 
 ###
 
-### 13. Cadastro com senha curta demais — 400
-POST http://localhost:3000/auth/registrar
+### 12. Cadastro com senha curta demais (400)
+POST {{host}}/auth/registrar
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "nome": "Teste",
-  "email": "outroteste@gmail.com",
+  "email": "outro-teste@exemplo.com",
   "senha": "123"
 }
 
 ###
 
-### 14. Caso inválido — id inexistente (404 via errorHandler, Prisma P2025)
-PUT http://localhost:3000/servicos/9999
-Content-Type: application/json
-Cookie: {{loginValido.response.headers.Set-Cookie}}
-
-{
-  "titulo": "Teste inválido",
-  "img": "",
-  "texto": ""
-}
-
-###
-### 21. Parâmetro de rota inválido — id não numérico (400)
-PUT http://localhost:3000/servicos/abc
+### 13. Parâmetro de rota inválido: id não numérico (400)
+PUT {{host}}/servicos/abc
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -169,31 +161,46 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### 22. Query inválida — página negativa (400)
-GET http://localhost:3000/depoimentos?pagina=-1
+### 14. Query inválida: página negativa (400)
+GET {{host}}/depoimentos?pagina=-1
 
 ###
 
-### 23. Query válida — paginação opcional (200, filtro não obrigatório)
-GET http://localhost:3000/depoimentos?pagina=1&limite=3
+### 15. Query válida: paginação opcional (200)
+GET {{host}}/depoimentos?pagina=1&limite=3
 
-### ==================
-### ESQUECI / REDEFINIR SENHA (dispara e-mail via Nodemailer + Ethereal)
-### ==================
+###
 
-### 15. Esqueci a senha — e-mail válido e cadastrado
-# Dispara o e-mail; confira a URL de preview do Ethereal no terminal do servidor
-POST http://localhost:3000/auth/esqueci-senha
+### 16. Id válido, porém inexistente (404, Prisma P2025 via errorHandler)
+PUT {{host}}/servicos/999999
 Content-Type: application/json
+Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
-  "email": "nataliaaraujofisiopilates@gmail.com"
+  "titulo": "Teste inválido",
+  "img": "",
+  "texto": ""
 }
 
 ###
 
-### 16. Esqueci a senha — corpo inválido (e-mail mal formatado) — 400
-POST http://localhost:3000/auth/esqueci-senha
+### ==================
+### ESQUECI / REDEFINIR SENHA (e-mail via Brevo; em dev, sem chave, Ethereal)
+### ==================
+
+### 17. Esqueci a senha com e-mail cadastrado (dispara e-mail)
+# Só envia se o TESTE_EMAIL for de um admin (crie no item 8). Confira a caixa de entrada e o spam.
+POST {{host}}/auth/esqueci-senha
+Content-Type: application/json
+
+{
+  "email": "{{$dotenv TESTE_EMAIL}}"
+}
+
+###
+
+### 18. Esqueci a senha com e-mail mal formatado (400)
+POST {{host}}/auth/esqueci-senha
 Content-Type: application/json
 
 {
@@ -202,46 +209,45 @@ Content-Type: application/json
 
 ###
 
-### 17. Esqueci a senha — e-mail não cadastrado
-# Mesma resposta 200 genérica do item 15, mas SEM e-mail sendo enviado (confira o terminal)
-POST http://localhost:3000/auth/esqueci-senha
+### 19. Esqueci a senha com e-mail não cadastrado (200 genérico, sem e-mail enviado)
+POST {{host}}/auth/esqueci-senha
 Content-Type: application/json
 
 {
-  "email": "naoexiste@gmail.com"
+  "email": "naoexiste@exemplo.com"
 }
 
 ###
 
-### 18. Redefinir senha — token com formato inválido (não tem 64 caracteres) — 400
-POST http://localhost:3000/auth/redefinir-senha
+### 20. Redefinir senha com token de formato inválido (400)
+POST {{host}}/auth/redefinir-senha
 Content-Type: application/json
 
 {
   "token": "token-muito-curto",
-  "novaSenha": "senhaNova123"
+  "novaSenha": "NovaSenhaDeTeste123"
 }
 
 ###
 
-### 19. Redefinir senha — token válido (COLE aqui o token copiado do e-mail do item 15)
-POST http://localhost:3000/auth/redefinir-senha
+### 21. Redefinir senha com o token do e-mail (cole o valor depois de ?token=)
+POST {{host}}/auth/redefinir-senha
 Content-Type: application/json
 
 {
   "token": "COLE_AQUI_O_TOKEN_DO_EMAIL",
-  "novaSenha": "senhaNova123"
+  "novaSenha": "NovaSenhaDeTeste123"
 }
 
 ###
 
-### 20. Redefinir senha — reusar o MESMO token do item 19 (deve dar 400, prova que é single-use)
-POST http://localhost:3000/auth/redefinir-senha
+### 22. Reusar o MESMO token do item 21 (400, prova que é de uso único)
+POST {{host}}/auth/redefinir-senha
 Content-Type: application/json
 
 {
-  "token": "COLE_AQUI_O_MESMO_TOKEN_DO_ITEM_19",
-  "novaSenha": "outraSenha456"
+  "token": "COLE_AQUI_O_MESMO_TOKEN_DO_ITEM_21",
+  "novaSenha": "OutraSenhaDeTeste123"
 }
 
 ###
@@ -251,12 +257,12 @@ Content-Type: application/json
 ### ==================
 
 ### GET - Buscar hero (público)
-GET http://localhost:3000/hero
+GET {{host}}/hero
 
 ###
 
-### PUT - Atualizar hero SEM login
-PUT http://localhost:3000/hero
+### PUT - Atualizar hero SEM login (401)
+PUT {{host}}/hero
 Content-Type: application/json
 
 {
@@ -267,7 +273,7 @@ Content-Type: application/json
 ###
 
 ### PUT - Atualizar hero COM login
-PUT http://localhost:3000/hero
+PUT {{host}}/hero
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -283,18 +289,18 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 ### ==================
 
 ### GET - Buscar estúdio (público)
-GET http://localhost:3000/estudio
+GET {{host}}/estudio
 
 ###
 
-### PUT - Atualizar estúdio COM login
-PUT http://localhost:3000/estudio
+### PUT - Atualizar estúdio COM login (sobrescreve o texto atual)
+PUT {{host}}/estudio
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Estúdio Natália Araújo FisioPilates",
-  "texto": "Nossa história começou em 2024, com o nascimento do Estúdio Natália Araújo Fisiopilates."
+  "texto": "Texto de teste do estúdio."
 }
 
 ###
@@ -304,18 +310,18 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 ### ==================
 
 ### GET - Buscar sobre (público)
-GET http://localhost:3000/sobre
+GET {{host}}/sobre
 
 ###
 
-### PUT - Atualizar sobre COM login
-PUT http://localhost:3000/sobre
+### PUT - Atualizar sobre COM login (sobrescreve o texto atual)
+PUT {{host}}/sobre
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 {
   "titulo": "Sobre Natália Araújo",
-  "texto": "Natália Araújo é fisioterapeuta, especialista no tratamento de escoliose."
+  "texto": "Texto de teste do sobre."
 }
 
 ###
@@ -325,12 +331,12 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 ### ==================
 
 ### GET - Buscar serviços (público)
-GET http://localhost:3000/servicos
+GET {{host}}/servicos
 
 ###
 
-### POST - Criar serviço SEM login
-POST http://localhost:3000/servicos
+### POST - Criar serviço SEM login (401)
+POST {{host}}/servicos
 Content-Type: application/json
 
 {
@@ -342,7 +348,7 @@ Content-Type: application/json
 ###
 
 ### POST - Criar serviço COM login
-POST http://localhost:3000/servicos
+POST {{host}}/servicos
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -354,8 +360,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### PUT - Atualizar serviço COM login
-PUT http://localhost:3000/servicos/1
+### PUT - Atualizar serviço COM login (troque o 1 por um id que exista)
+PUT {{host}}/servicos/1
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -367,8 +373,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### DELETE - Deletar serviço COM login
-DELETE http://localhost:3000/servicos/1
+### DELETE - Deletar serviço COM login (APAGA de verdade; troque o 1 por um id de teste)
+DELETE {{host}}/servicos/1
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
@@ -378,12 +384,12 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 ### ==================
 
 ### GET - Buscar planos (público)
-GET http://localhost:3000/planos
+GET {{host}}/planos
 
 ###
 
 ### POST - Criar plano COM login
-POST http://localhost:3000/planos
+POST {{host}}/planos
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -395,8 +401,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### PUT - Atualizar plano COM login
-PUT http://localhost:3000/planos/1
+### PUT - Atualizar plano COM login (troque o 1 por um id que exista)
+PUT {{host}}/planos/1
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -408,8 +414,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### DELETE - Deletar plano COM login
-DELETE http://localhost:3000/planos/1
+### DELETE - Deletar plano COM login (APAGA de verdade; troque o 1 por um id de teste)
+DELETE {{host}}/planos/1
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
@@ -419,12 +425,12 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 ### ==================
 
 ### GET - Buscar planos detalhados (público)
-GET http://localhost:3000/planos-detalhados
+GET {{host}}/planos-detalhados
 
 ###
 
 ### POST - Criar plano detalhado COM login
-POST http://localhost:3000/planos-detalhados
+POST {{host}}/planos-detalhados
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -438,8 +444,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### PUT - Atualizar plano detalhado COM login
-PUT http://localhost:3000/planos-detalhados/1
+### PUT - Atualizar plano detalhado COM login (troque o 1 por um id que exista)
+PUT {{host}}/planos-detalhados/1
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -454,8 +460,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### DELETE - Deletar plano detalhado COM login
-DELETE http://localhost:3000/planos-detalhados/1
+### DELETE - Deletar plano detalhado COM login (APAGA de verdade; troque o 1 por um id de teste)
+DELETE {{host}}/planos-detalhados/1
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
@@ -465,12 +471,12 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 ### ==================
 
 ### GET - Buscar depoimentos (público)
-GET http://localhost:3000/depoimentos
+GET {{host}}/depoimentos
 
 ###
 
 ### POST - Criar depoimento COM login
-POST http://localhost:3000/depoimentos
+POST {{host}}/depoimentos
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -482,8 +488,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### PUT - Atualizar depoimento COM login
-PUT http://localhost:3000/depoimentos/1
+### PUT - Atualizar depoimento COM login (troque o 1 por um id que exista)
+PUT {{host}}/depoimentos/1
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -495,8 +501,8 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
 
-### DELETE - Deletar depoimento COM login
-DELETE http://localhost:3000/depoimentos/1
+### DELETE - Deletar depoimento COM login (APAGA de verdade; troque o 1 por um id de teste)
+DELETE {{host}}/depoimentos/1
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
 ###
@@ -506,12 +512,12 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
 ### ==================
 
 ### GET - Buscar footer (público)
-GET http://localhost:3000/footer
+GET {{host}}/footer
 
 ###
 
 ### PUT - Atualizar footer COM login
-PUT http://localhost:3000/footer
+PUT {{host}}/footer
 Content-Type: application/json
 Cookie: {{loginValido.response.headers.Set-Cookie}}
 
@@ -522,3 +528,25 @@ Cookie: {{loginValido.response.headers.Set-Cookie}}
   "endereco": "João Pessoa - PB",
   "mapa": "https://maps.google.com/maps?q=R.+Rejane+Freire+Correia,+271,+João+Pessoa+PB&output=embed"
 }
+
+###
+
+### ==================
+### ENCERRAR SESSÃO (por último: derruba o cookie dos blocos acima)
+### ==================
+
+### 23. Logout (200)
+POST {{host}}/auth/logout
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+###
+
+### 24. Rota protegida DEPOIS do logout (401)
+GET {{host}}/auth/me
+Cookie: {{loginValido.response.headers.Set-Cookie}}
+
+###
+
+### LIMPEZA: apague o admin de teste no MySQL Workbench:
+#   SELECT id, email FROM admins;
+#   DELETE FROM admins WHERE id = ID_DO_ADMIN_DE_TESTE;

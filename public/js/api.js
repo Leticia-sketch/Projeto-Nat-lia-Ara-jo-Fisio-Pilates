@@ -1,6 +1,6 @@
 export async function carregarDados() {
 
-  const resposta = await fetch("http://localhost:3000/dados")
+  const resposta = await fetch("/dados")
 
   const dados = await resposta.json()
 

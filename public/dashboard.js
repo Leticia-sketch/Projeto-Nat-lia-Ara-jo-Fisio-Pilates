@@ -12,7 +12,7 @@ let dados = {}
 
 async function carregarDados() {
     try {
-        const resposta = await fetch("http://localhost:3000/dados", { credentials: "include" })
+        const resposta = await fetch("/dados", { credentials: "include" })
         dados = await resposta.json()
         console.log("Dados carregados:", dados)
         preencherHero()
@@ -79,7 +79,7 @@ async function salvarHero() {
     const titulo = inputs[0].value
     const botao = inputs[1].value
 
-    await fetch("http://localhost:3000/hero", {
+    await fetch("/hero", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -99,7 +99,7 @@ function preencherEstudio() {
 }
 
 async function carregarEstudio() {
-    const res = await fetch("http://localhost:3000/estudio", { credentials: "include" })
+    const res = await fetch("/estudio", { credentials: "include" })
     const estudio = await res.json()
     document.getElementById("tituloEstudioInput").value = estudio.titulo
     document.getElementById("textoEstudioInput").value = estudio.texto
@@ -109,7 +109,7 @@ async function salvarEstudio() {
     const titulo = document.getElementById("tituloEstudioInput").value
     const texto = document.getElementById("textoEstudioInput").value
 
-    await fetch("http://localhost:3000/estudio", {
+    await fetch("/estudio", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -134,7 +134,7 @@ async function salvarSobre() {
     const titulo = document.querySelector("#sobre input").value
     const texto = document.querySelector("#sobre textarea").value
 
-    await fetch("http://localhost:3000/sobre", {
+    await fetch("/sobre", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -149,7 +149,7 @@ async function salvarSobre() {
 // =========================
 
 async function preencherServicos() {
-    const res = await fetch("http://localhost:3000/servicos", { credentials: "include" })
+    const res = await fetch("/servicos", { credentials: "include" })
     dados.servicos = await res.json()
 
     const grid = document.querySelector("#servicos .grid")
@@ -165,9 +165,9 @@ async function preencherServicos() {
                 </button>
             </div>
             <div class="space-y-4">
-                <input class="input titulo-servico" value="${servico.titulo || ""}">
-                <input class="input imagem-servico" value="${servico.img || ""}">
-                <textarea class="input texto-servico h-[160px] resize-none">${servico.texto || ""}</textarea>
+                <input class="input titulo-servico" value="${servico.titulo || ""}" placeholder="Título do serviço (ex: Pilates Terapêutico)">
+                <input class="input imagem-servico" value="${servico.img || ""}" placeholder="Caminho da imagem (ex: img/servico1.jpeg)">
+                <textarea class="input texto-servico h-[160px] resize-none" placeholder="Descrição do serviço">${servico.texto || ""}</textarea>
             </div>
             <button onclick="salvarServico(${servico.id})" class="btn w-full mt-6">Salvar</button>
         </div>
@@ -181,7 +181,7 @@ async function salvarServico(id) {
     const img = card.querySelector(".imagem-servico").value
     const texto = card.querySelector(".texto-servico").value
 
-    await fetch(`http://localhost:3000/servicos/${id}`, {
+    await fetch(`/servicos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -193,7 +193,7 @@ async function salvarServico(id) {
 }
 
 async function novoServico() {
-    await fetch("http://localhost:3000/servicos", {
+    await fetch("/servicos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -204,7 +204,7 @@ async function novoServico() {
 
 async function deletarServico(id) {
     if (!confirm("Tem certeza que deseja deletar este serviço?")) return
-    await fetch(`http://localhost:3000/servicos/${id}`, { method: "DELETE", credentials: "include" })
+    await fetch(`/servicos/${id}`, { method: "DELETE", credentials: "include" })
     preencherServicos()
 }
 
@@ -213,7 +213,7 @@ async function deletarServico(id) {
 // =========================
 
 async function preencherPlanos() {
-    const res = await fetch("http://localhost:3000/planos", { credentials: "include" })
+    const res = await fetch("/planos", { credentials: "include" })
     dados.planos = await res.json()
 
     const grid = document.querySelector("#planos .grid")
@@ -229,23 +229,22 @@ async function preencherPlanos() {
                 </button>
             </div>
             <div class="space-y-5">
-                <input class="input titulo-plano" value="${plano.titulo || ""}">
-                <input class="input preco-plano" value="${plano.preco || ""}">
-                <textarea class="input beneficios-plano h-[150px] resize-none">${plano.beneficios?.join("\n") || ""}</textarea>
+                <input class="input titulo-plano" value="${plano.titulo || ""}" placeholder="Título do plano (ex: Pilates)">
+                <input class="input preco-plano" value="${plano.preco || ""}" placeholder="Texto de preço (ex: Planos flexíveis!)">
+                <textarea class="input beneficios-plano h-[150px] resize-none" placeholder="Descrição do plano">${plano.beneficios?.join("\n") || ""}</textarea>
             </div>
             <button onclick="salvarPlano(${plano.id})" class="btn w-full mt-6">Salvar</button>
         </div>
         `
     })
 }
-
 async function salvarPlano(id) {
     const card = document.querySelector(`#planos .card[data-id="${id}"]`)
     const titulo = card.querySelector(".titulo-plano").value
     const preco = card.querySelector(".preco-plano").value
     const beneficios = card.querySelector(".beneficios-plano").value.split("\n").filter(b => b.trim() !== "")
 
-    await fetch(`http://localhost:3000/planos/${id}`, {
+    await fetch(`/planos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -257,7 +256,7 @@ async function salvarPlano(id) {
 }
 
 async function novoPlano() {
-    await fetch("http://localhost:3000/planos", {
+    await fetch("/planos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -268,7 +267,7 @@ async function novoPlano() {
 
 async function deletarPlano(id) {
     if (!confirm("Tem certeza que deseja deletar este plano?")) return
-    await fetch(`http://localhost:3000/planos/${id}`, { method: "DELETE", credentials: "include" })
+    await fetch(`/planos/${id}`, { method: "DELETE", credentials: "include" })
     preencherPlanos()
 }
 
@@ -277,7 +276,7 @@ async function deletarPlano(id) {
 // =========================
 
 async function preencherDepoimentos() {
-    const res = await fetch("http://localhost:3000/depoimentos", { credentials: "include" })
+    const res = await fetch("/depoimentos", { credentials: "include" })
     dados.depoimentos = await res.json()
 
     const grid = document.querySelector("#depoimentos .grid")
@@ -293,23 +292,22 @@ async function preencherDepoimentos() {
                 </button>
             </div>
             <div class="space-y-4">
-                <input class="input nome-dep" value="${dep.nome || ""}">
-                <textarea class="input texto-dep h-[140px] resize-none">${dep.texto || ""}</textarea>
-                <input class="input estrelas-dep" value="${dep.estrelas || 5}">
+                <input class="input nome-dep" value="${dep.nome || ""}" placeholder="Nome ou @usuário (ex: @gabibcunha)">
+                <textarea class="input texto-dep h-[140px] resize-none" placeholder="Texto do depoimento">${dep.texto || ""}</textarea>
+                <input class="input estrelas-dep" value="${dep.estrelas || 5}" placeholder="Número de estrelas (1 a 5)">
             </div>
             <button onclick="salvarDepoimento(${dep.id})" class="btn w-full mt-6">Salvar</button>
         </div>
         `
     })
 }
-
 async function salvarDepoimento(id) {
     const card = document.querySelector(`#depoimentos .card[data-id="${id}"]`)
     const nome = card.querySelector(".nome-dep").value
     const texto = card.querySelector(".texto-dep").value
     const estrelas = parseInt(card.querySelector(".estrelas-dep").value)
 
-    await fetch(`http://localhost:3000/depoimentos/${id}`, {
+    await fetch(`/depoimentos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -321,7 +319,7 @@ async function salvarDepoimento(id) {
 }
 
 async function novoDepoimento() {
-    await fetch("http://localhost:3000/depoimentos", {
+    await fetch("/depoimentos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -332,7 +330,7 @@ async function novoDepoimento() {
 
 async function deletarDepoimento(id) {
     if (!confirm("Tem certeza que deseja deletar este depoimento?")) return
-    await fetch(`http://localhost:3000/depoimentos/${id}`, { method: "DELETE", credentials: "include" })
+    await fetch(`/depoimentos/${id}`, { method: "DELETE", credentials: "include" })
     preencherDepoimentos()
 }
 
@@ -355,7 +353,7 @@ async function salvarFooter() {
   const endereco = document.getElementById("footerEndereco").value
   const mapa = document.getElementById("footerMapa").value
 
-  await fetch("http://localhost:3000/footer", {
+  await fetch("/footer", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -372,7 +370,7 @@ async function salvarFooter() {
 let planosDetalhados = []
 
 async function carregarPlanosDetalhados() {
-    const res = await fetch("http://localhost:3000/planos-detalhados", { credentials: "include" })
+    const res = await fetch("/planos-detalhados", { credentials: "include" })
     const dados = await res.json()
     planosDetalhados = dados.lista
     preencherPlanosDetalhados()
@@ -419,7 +417,18 @@ function adicionarOpcao(index) {
     preencherPlanosDetalhados()
 }
 
-function deletarPlanoDetalhado(index) {
+async function deletarPlanoDetalhado(index) {
+    if (!confirm("Tem certeza que deseja deletar esta frequência?")) return
+
+    const plano = planosDetalhados[index]
+
+    if (plano.id) {
+        await fetch(`/planos-detalhados/${plano.id}`, {
+            method: "DELETE",
+            credentials: "include"
+        })
+    }
+
     planosDetalhados.splice(index, 1)
     preencherPlanosDetalhados()
 }
@@ -433,14 +442,14 @@ async function salvarPlanoDetalhado(index) {
     const plano = planosDetalhados[index]
 
     if (plano.id) {
-        await fetch(`http://localhost:3000/planos-detalhados/${plano.id}`, {
+        await fetch(`/planos-detalhados/${plano.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
             body: JSON.stringify({ titulo, opcoes })
         })
     } else {
-        await fetch("http://localhost:3000/planos-detalhados", {
+        await fetch("/planos-detalhados", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

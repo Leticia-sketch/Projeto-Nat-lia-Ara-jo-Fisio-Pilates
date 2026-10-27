@@ -1,3 +1,21 @@
+/* =========================
+   VARIÁVEIS (mude as cores aqui)
+   ========================= */
+:root {
+    --azul: #175292;
+    --verde: #32a392;
+    --ciano: #69D7DC;
+    --fundo: #f5f7f8;
+    --fundo-alt: #edf2f6;
+    --branco: #ffffff;
+    --texto: #333333;
+    --raio: 10px;
+    --sombra: 0 8px 24px rgba(15, 40, 70, 0.12);
+}
+
+/* =========================
+   BASE
+   ========================= */
 * {
     margin: 0;
     padding: 0;
@@ -5,201 +23,222 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body {
-    background: #f5f7f8;
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+    /* o header fixo não cobre os títulos ao clicar no menu */
 }
 
-/* parte do header */
+body {
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--ciano);
+    outline-offset: 3px;
+}
+
+.menu-toggle:focus-visible+.menu-icone {
+    outline: 3px solid var(--ciano);
+    outline-offset: 2px;
+}
+
+/* =========================
+   HEADER / MENU
+   ========================= */
 header {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    background: #3986C5;
-    padding: 20px;
-    z-index: 10;
+    background: var(--azul);
+    padding: 12px 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    z-index: 100;
 }
 
 nav {
     display: flex;
-    justify-content: flex-start; 
     align-items: center;
+    gap: 30px;
     max-width: 1200px;
     margin: auto;
 }
 
 nav ul {
     display: flex;
+    align-items: center;
+    flex: 1;
     list-style: none;
-    gap: 30px;
+    gap: 28px;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
+    transition: color 0.2s;
 }
 
-/* parte do hero */ 
+nav ul a:hover {
+    color: var(--ciano);
+}
+
+.logo img {
+    height: 44px;
+    width: auto;
+    display: block;
+    background: white;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+/* botão de login do adm (fica à direita) */
+.item-login {
+    margin-left: auto;
+}
+
+.login-btn {
+    background: var(--ciano);
+    padding: 8px 18px;
+    border-radius: 8px;
+    color: black;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+nav a.login-btn:hover {
+    background: #4fc3c9;
+    color: black;
+}
+
+/* o ícone do hambúrguer só aparece no celular/tablet */
+.menu-toggle,
+.menu-icone {
+    display: none;
+}
+
+/* =========================
+   HERO
+   ========================= */
 .hero {
     position: relative;
-    height: 100vh;
-      background: url("../img/home.jpeg");
+    min-height: 100vh;
+    min-height: 100svh;
+    background:
+        linear-gradient(0deg, rgba(10, 35, 65, 0.85) 0%, rgba(10, 35, 65, 0.45) 35%, rgba(10, 35, 65, 0) 65%),
+        url("../img/home.jpeg");
     background-size: cover;
     background-position: center;
     display: flex;
-    align-items: center;
-    padding-left: 100px;
-    margin-top: 60px; /* evita sobreposição com header */
-    
+    align-items: flex-end;
+    padding: 110px 10% 170px;
 }
 
 .hero::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 150px;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--branco));
+}
 
-  background: linear-gradient(
-    to bottom,
-    rgba(231, 218, 218, 0),
-    #f5f7f8
-  );
+.hero-text {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
 }
 
 .hero h1 {
     color: white;
-    font-size: 28px;
-    margin-bottom: 500px;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 28px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 .btn {
-    background: #69D7DC;
-    padding: 10px 25px;
-    color: black;
+    display: inline-block;
+    background: var(--verde);
+    color: #0a1f33;
+    padding: 14px 34px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s, background 0.2s;
 }
 
-/* imagem sobreposta do studio */
-
-#img {
-  position: relative;
-  margin-left: 50px;
-  width: 400px;
+.btn:hover {
+    background: var(--ciano);
+    transform: translateY(-2px);
 }
 
-/* estado inicial */
-.img-base {
-  width: 70%;
-  border-radius: 10px;
-  transform: translateX(10px, 10px);
-  transition: transform 0.8s ease;
+/* =========================
+   TÍTULOS DE SEÇÃO (padrão único)
+   ========================= */
+.titulo-secao {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--azul);
+    text-align: center;
+    margin-bottom: 50px;
 }
 
-.img-topo {
-  position: absolute;
-  width: 25%;
-  top: -30px;
-  left: -170px;
-  z-index: 2;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-
+.titulo-secao::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--ciano);
+    border-radius: 2px;
+    margin: 14px auto 0;
 }
 
-/* a parte de serviços */
+.titulo-secao.esquerda {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.titulo-secao.esquerda::after {
+    margin-left: auto;
+}
+
+/* =========================
+   ESTÚDIO
+   ========================= */
+.estudio,
+.sobre,
 .servicos {
-    padding: 80px 10%;
+    padding: 90px 10%;
 }
 
-.servicos h2 {
-    text-align: center;
-    margin-bottom: 80px;
-    color: #69D7DC;
-    font-size: 35px;
-}
-
-.servicos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-.texto {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-
-
-.btn-saiba {
-    margin-top: 15px;
-    padding: 8px 15px;
-    background: white;
-    color: #3986C5;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: 600;
-
-    align-self: center; /* ou flex-end se quiser na direita */
-}
-
-.btn-saiba:hover {
-    background: #69D7DC;
-    color: black;
-}
-
-.card {
-    display: flex;
-    background: #3986C5;
-    color: white;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.card img {
-    width: 50%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.texto {
-    padding: 20px;
-}
-
-/* parte de studio */
 .estudio {
-    padding: 80px 10%;
+    background: var(--branco);
 }
 
 .estudio-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 50px;
     align-items: center;
 }
 
 .estudio img {
-    width: 1000%;
-    border-radius: 10px;
+    border-radius: var(--raio);
 }
 
 .estudio-texto {
     max-width: 700px;
     margin: 0 auto;
-    text-align: center;
-}
-
-#tituloEstudio {
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 25px;
-    line-height: 1.2;
-    color: #69D7DC;
+    text-align: justify;
+    hyphens: auto;
 }
 
 #textoEstudio {
@@ -222,96 +261,355 @@ nav a {
     z-index: 2;
 }
 
-/* sobre natália */
+/* =========================
+   SOBRE NATÁLIA
+   ========================= */
 .sobre {
-    padding: 80px 10%;
+    background: var(--fundo);
+    overflow: hidden;
+    /* evita barra horizontal por causa da animação de entrada */
 }
 
 .sobre-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: clamp(40px, 8vw, 140px);
     align-items: center;
 }
 
 .sobre img {
     width: 70%;
-    border-radius: 10px;
+    border-radius: var(--raio);
 
-    -webkit-mask-image: radial-gradient(circle, black 60%, transparent 100%);
-    mask-image: radial-gradient(circle, black 60%, transparent 100%);
+    -webkit-mask-image:
+        linear-gradient(to right, transparent, black 20%, black 80%, transparent),
+        linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+    -webkit-mask-composite: source-in;
+
+    mask-image:
+        linear-gradient(to right, transparent, black 20%, black 80%, transparent),
+        linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+    mask-composite: intersect;
 }
 
-
-
 .sobre-texto {
-    max-width: 600px; 
-    line-height: 1.8; 
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: justify;
+    hyphens: auto;
+    line-height: 1.8;
     font-size: 16px;
-    color: #333;
+    color: var(--texto);
 }
 
 .sobre-texto p {
     margin-top: 20px;
 }
 
-.sobre-texto h2 {
-    margin-bottom: 25px;
+/* =========================
+   SERVIÇOS
+   ========================= */
+.servicos {
+    background: var(--branco);
 }
 
-#tituloSobre {
-    font-size: 32px;
+.servicos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.card {
+    display: flex;
+    background: var(--azul);
+    color: white;
+    border-radius: var(--raio);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(15, 40, 70, 0.2);
+}
+
+.card img {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.texto {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: justify;
+}
+
+.btn-saiba {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background: white;
+    color: var(--azul);
+    border-radius: 8px;
+    text-decoration: none;
     font-weight: 600;
-    color: #69D7DC; 
-    margin-bottom: 20px;
+    align-self: center;
+    transition: background 0.2s;
 }
 
-/* botão de login do adm */
-.login-btn {
-    background: #69D7DC;
-    padding: 8px 18px;
-    border-radius: 5px;
+.btn-saiba:hover {
+    background: var(--ciano);
     color: black;
-    font-weight: 600;
-    transition: 0.3s;
 }
 
-.login-btn:hover {
-    background: #4fc3c9;
+/* =========================
+   PLANOS E DEPOIMENTOS (fundos alternados)
+   ========================= */
+#planos {
+    background: var(--fundo);
 }
 
-footer {
-    background-image: linear-gradient(#3986C5,#32a392); /* o background da parte de contato*/
-}
-
-/* a parte de planos*/
 #planosContainer div {
     transition: all 0.7s ease;
 }
 
-/* deixando reponsivo */
+#depoimentos {
+    background: var(--fundo-alt);
+}
 
-@media (max-width: 768px) {
+/* =========================
+   FOOTER
+   ========================= */
+footer {
+    background-image: linear-gradient(var(--azul), var(--verde));
+}
 
+/* =========================
+   BOTÃO FLUTUANTE DO WHATSAPP
+   ========================= */
+.whatsapp-flutuante {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #128c4a;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 18px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.whatsapp-flutuante:hover {
+    background: #0e7a40;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   LEGADO (não usado no index.html; mantido caso outra página use)
+   ========================= */
+#img {
+    position: relative;
+    margin-left: 50px;
+    width: 400px;
+}
+
+.img-base {
+    width: 70%;
+    border-radius: 10px;
+    transition: transform 0.8s ease;
+}
+
+.img-topo {
+    position: absolute;
+    width: 25%;
+    top: -30px;
+    left: -170px;
+    z-index: 2;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================
+   RESPONSIVO: TABLET (menu vira hambúrguer)
+   ========================= */
+@media (max-width: 1000px) {
+
+    nav {
+        justify-content: space-between;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .menu-icone {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        margin-left: auto;
+        cursor: pointer;
+    }
+
+    .menu-icone span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: white;
+        border-radius: 2px;
+        transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .menu-toggle:checked+.menu-icone span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .menu-toggle:checked+.menu-icone span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle:checked+.menu-icone span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: var(--azul);
+        padding: 8px 20px 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-toggle:checked~.menu {
+        display: flex;
+    }
+
+    .menu li a {
+        display: block;
+        padding: 14px 4px;
+        font-size: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .item-login {
+        margin-left: 0;
+        margin-top: 14px;
+    }
+
+    .menu li a.login-btn {
+        text-align: center;
+        padding: 12px 18px;
+        border-bottom: none;
+    }
+}
+
+/* =========================
+   RESPONSIVO: CONTEÚDO EMPILHADO
+   ========================= */
+@media (max-width: 900px) {
+
+    .estudio,
+    .sobre,
+    .servicos {
+        padding: 60px 6%;
+    }
+
+    .estudio-grid,
+    .sobre-grid,
     .servicos-grid {
         grid-template-columns: 1fr;
     }
 
-    .estudio-grid {
-        grid-template-columns: 1fr;
+    .estudio-grid,
+    .sobre-grid {
+        gap: 40px;
     }
 
-    .sobre-grid {
-        grid-template-columns: 1fr;
+    #carousel {
+        margin: 0 auto;
+    }
+
+    .sobre img {
+        display: block;
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+
+    .servicos .card {
+        flex-direction: column;
+    }
+
+    .servicos .card img {
+        width: 100%;
+        height: 220px;
     }
 
     .hero {
-        padding-left: 20px;
+        padding: 100px 20px 170px;
+        justify-content: center;
         text-align: center;
     }
 
-    .hero h1 {
+    .hero-text {
+        margin: 0 auto;
+    }
+
+    .titulo-secao {
+        margin-bottom: 36px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .whatsapp-flutuante {
+        right: 14px;
+        bottom: 14px;
+        padding: 14px;
         font-size: 20px;
     }
 
+    .whatsapp-flutuante .whatsapp-texto {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* =========================
+   REMENDOS (estilos que o Tailwind do JS sobrescrevia)
+   ========================= */
+.servicos .card .texto,
+.servicos .card .texto * {
+    text-align: justify !important;
+}
+
+.servicos .card .btn-saiba {
+    align-self: center;
 }

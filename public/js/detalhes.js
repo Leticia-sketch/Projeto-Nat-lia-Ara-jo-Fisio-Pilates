@@ -1,5 +1,5 @@
 async function carregarPlanosDetalhados() {
-  const resposta = await fetch("http://localhost:3000/planos-detalhados")
+  const resposta = await fetch("/planos-detalhados")
   const dados = await resposta.json()
   return dados
 }

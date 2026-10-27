@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Esqueci minha senha</title>
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="h-screen flex overflow-hidden">
+
+  <div class="hidden md:flex w-1/2 relative">
+    <img src="img/studio4.jpeg" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-green-600/70 flex flex-col justify-center px-12 text-white">
+      <h1 class="text-5xl font-light mb-4">Bem-vinda</h1>
+      <p class="text-xl">Painel Administrativo</p>
+      <p class="text-lg">Studio de Pilates</p>
+    </div>
+  </div>
+
+  <div class="w-full md:w-1/2 flex items-center justify-center bg-[#f5f7f8]">
+    <div class="w-full max-w-md">
+
+      <div class="flex justify-center mb-6">
+        <div class="bg-green-500 w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl">
+          🔑
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-center mb-2">
+        Esqueci minha senha
+      </h2>
+
+      <p class="text-center text-gray-500 mb-6">
+        Informe seu e-mail e enviaremos instruções para redefinir sua senha
+      </p>
+
+      <form id="esqueciSenhaForm" class="space-y-4" novalidate>
+        <div>
+          <label>Email</label>
+          <input id="email" type="email" required class="w-full border rounded-lg p-3" placeholder="seu@email.com">
+          <p id="erroEmail" class="text-red-500 text-sm mt-1 hidden"></p>
+        </div>
+
+        <button class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+          Enviar instruções
+        </button>
+      </form>
+
+      <div id="mensagemSucesso" class="hidden mt-4 p-4 bg-green-50 text-green-700 rounded-lg text-sm text-center"></div>
+
+      <p class="text-center text-sm mt-6">
+        <a href="login.html" class="text-green-600 hover:underline">Voltar para o login</a>
+      </p>
+
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("esqueciSenhaForm")
+    const emailInput = document.getElementById("email")
+    const erroEmail = document.getElementById("erroEmail")
+    const mensagemSucesso = document.getElementById("mensagemSucesso")
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault()
+
+      erroEmail.classList.add("hidden")
+      mensagemSucesso.classList.add("hidden")
+
+      if (!emailInput.checkValidity()) {
+        erroEmail.textContent = "Informe um e-mail válido"
+        erroEmail.classList.remove("hidden")
+        return
+      }
+
+      try {
+        const resposta = await fetch("/auth/esqueci-senha", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: emailInput.value })
+        })
+
+        const dados = await resposta.json()
+
+        if (resposta.ok) {
+          form.classList.add("hidden")
+          mensagemSucesso.textContent = dados.mensagem
+          mensagemSucesso.classList.remove("hidden")
+        } else {
+          erroEmail.textContent = dados.issues?.[0]?.message || dados.erro || "Erro ao processar solicitação"
+          erroEmail.classList.remove("hidden")
+        }
+      } catch (erro) {
+        erroEmail.textContent = "Erro ao conectar com o servidor"
+        erroEmail.classList.remove("hidden")
+      }
+    })
+  </script>
+
+</body>
+</html>
